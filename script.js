@@ -1,192 +1,17 @@
-alert("JavaScript Connected!");
-document.addEventListener("DOMContentLoaded", function () {
-  const btn = document.getElementById("read-more-btn");
-  const moreText = document.getElementById("more-text");
-  const shortText = document.getElementById("short-text");
-
-  btn.addEventListener("click", function () {
-    if (moreText.style.display === "none") {
-      moreText.style.display = "block";
-      btn.innerText = "Read Less";
-    } else {
-      moreText.style.display = "none";
-      btn.innerText = "Read More";
-    }
-  });
-});
-<script src="script.js"></script>
-</body>
-</html>
-// Footer me current year automatic dalna
-document.addEventListener("DOMContentLoaded", function () {
-  const yearSpan = document.getElementById("year");
-  const currentYear = new Date().getFullYear();
-  yearSpan.textContent = currentYear;
-});
-// Supabase client setup
-const { createClient } = supabase;
-
-// Replace with your Supabase project details
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
-
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// Load stories function
-async function loadStories() {
-  let { data, error } = await db.from("stories").select("*");
-  
-  if (error) {
-    console.error("Error loading stories:", error);
-    return;
-  }
-
-  const storyContainer = document.getElementById("stories");
-
-  if (data.length === 0) {
-    storyContainer.innerHTML = "<p>No stories found.</p>";
-    return;
-  }
-
-  storyContainer.innerHTML = data.map(story => `
-    <div class="story">
-      <h3>${story.title}</h3>
-      <p>${story.content}</p>
-    </div>
-  `).join("");
-}
-
-// Call on page load
-document.addEventListener("DOMContentLoaded", loadStories);
-// Supabase client import (via CDN)
-const { createClient } = supabase;
-
-// Your Supabase credentials
-const SUPABASE_URL = "https://pglsznvthegivgatupkk.supabase.co";
-const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY"; // copy from API settings
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// Function to load stories
-async function loadStories() {
-  const { data, error } = await supabase.from("stories").select("*");
-
-  if (error) {
-    console.error("Error fetching stories:", error);
-    return;
-  }
-
-  const container = document.getElementById("stories");
-  if (!data || data.length === 0) {
-    container.innerHTML = "<p>No stories found.</p>";
-    return;
-  }
-
-  container.innerHTML = data.map(story => `
-    <div class="story">
-      <h3>${story.title}</h3>
-      <p>${story.content}</p>
-    </div>
-  `).join("");
-}
-
-// Load stories when page loads
-document.addEventListener("DOMContentLoaded", loadStories);
-// Import createClient from Supabase
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-
-// Supabase credentials
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co"        // replace with your project URL
-const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY"                       // replace with your anon public key
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
-
-// Function to load stories
-async function loadStories() {
-  const { data, error } = await supabase.from("stories").select("*")
-
-  if (error) {
-    console.error("Error fetching stories:", error)
-    return
-  }
-
-  const container = document.getElementById("stories")
-  if (!data || data.length === 0) {
-    container.innerHTML = "<p>No stories found.</p>"
-    return
-  }
-
-  container.innerHTML = data.map(story => `
-    <div class="story">
-      <h3>${story.title}</h3>
-      <p>${story.content}</p>
-    </div>
-  `).join("")
-}
-
-// Load stories when page loads
-document.addEventListener("DOMContentLoaded", loadStories)
-const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
-const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
-import { createClient } from '@supabase/supabase-js';
-
-const SUPABASE_URL = 'https://pglsznvthegivgatupkk.supabase.co'; // yahan aapka Supabase URL
-const SUPABASE_KEY = 'YOUR_ANON_PUBLIC_KEY_HERE'; // yahan aapki anon/public key
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-// 1️⃣ Supabase client setup
+// ✅ Supabase Client Import via CDN
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-const supabaseUrl = 'https://pglsznvthegivgatupkk.supabase.co';
-const supabaseKey = 'YOUR_SUPABASE_ANON_KEY'; // Replace with your anon/public key
-const supabase = createClient(supabaseUrl, supabaseKey);
+// ✅ Your Supabase Project Credentials
+const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE';
 
-// 2️⃣ DOM container
+// ✅ Initialize Supabase Client
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ✅ Container where stories will display
 const container = document.getElementById('stories-container');
 
-// 3️⃣ Fetch stories from Supabase
-async function fetchStories() {
-  try {
-    const { data, error } = await supabase
-      .from('stories')
-      .select(`id, title, content, short_intro, image_url, user_id`)
-      .order('id', { ascending: false });
-
-    if (error) throw error;
-
-    displayStories(data);
-  } catch (err) {
-    console.error('Error fetching stories:', err.message);
-    container.innerHTML = `<p style="color:red;">Failed to load stories.</p>`;
-  }
-}
-
-// 4️⃣ Display stories dynamically
-function displayStories(stories) {
-  container.innerHTML = ''; // clear previous content
-  stories.forEach(story => {
-    const card = document.createElement('div');
-    card.className = 'story-card';
-    card.innerHTML = `
-      <img src="${story.image_url}" alt="${story.title}" class="story-img"/>
-      <h2 class="story-title">${story.title}</h2>
-      <p class="story-intro">${story.short_intro}</p>
-      <p class="story-content">${story.content}</p>
-    `;
-    container.appendChild(card);
-  });
-}
-
-// 5️⃣ Call fetch function
-fetchStories();
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-const supabaseUrl = 'https://pglsznvthegivgatupkk.supabase.co';
-const supabaseKey = 'YOUR_SUPABASE_ANON_KEY'; // Replace with your anon/public key
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-const container = document.getElementById('stories-container');
-
+// ✅ Fetch stories from Supabase
 async function fetchStories() {
   try {
     const { data, error } = await supabase
@@ -197,33 +22,55 @@ async function fetchStories() {
         short_intro,
         content,
         image_url,
-        user_id,
-        users(name)  -- Fetch author name
+        created_at,
+        users(name)
       `)
       .order('id', { ascending: false });
 
     if (error) throw error;
     displayStories(data);
   } catch (err) {
-    console.error('Error fetching stories:', err.message);
-    container.innerHTML = `<p style="color:red;">Failed to load stories.</p>`;
+    console.error('⚠️ Error fetching stories:', err.message);
+    container.innerHTML = `<p style="color:red;">Failed to load stories. Please try again later.</p>`;
   }
 }
 
+// ✅ Display stories in HTML
 function displayStories(stories) {
   container.innerHTML = '';
+
+  if (!stories || stories.length === 0) {
+    container.innerHTML = '<p>No stories found yet.</p>';
+    return;
+  }
+
   stories.forEach(story => {
     const card = document.createElement('div');
     card.className = 'story-card';
+
     card.innerHTML = `
-      <img src="${story.image_url}" alt="${story.title}" class="story-img"/>
-      <h2 class="story-title">${story.title}</h2>
-      <p class="story-author">By: ${story.users?.name || 'Unknown'}</p>
-      <p class="story-intro">${story.short_intro}</p>
-      <p class="story-content">${story.content}</p>
+      <div class="story-img-box">
+        <img src="${story.image_url || 'images/default.jpg'}" alt="${story.title}" class="story-img"/>
+      </div>
+      <div class="story-content-box">
+        <h2 class="story-title">${story.title}</h2>
+        <p class="story-author">👤 By: ${story.users?.name || 'Unknown Author'}</p>
+        <p class="story-date">🕓 ${new Date(story.created_at).toLocaleDateString()}</p>
+        <p class="story-intro">${story.short_intro || ''}</p>
+        <p class="story-full">${story.content}</p>
+      </div>
     `;
     container.appendChild(card);
   });
 }
 
-fetchStories();
+// ✅ Fetch stories when page loads
+document.addEventListener('DOMContentLoaded', fetchStories);
+
+// ✅ Footer auto year update
+document.addEventListener('DOMContentLoaded', () => {
+  const yearSpan = document.getElementById('year');
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
+});

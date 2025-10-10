@@ -5,64 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stories - My Blog</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Optional quick styling */
+    .story-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 20px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background-color: #fff;
+    }
+    .story-img {
+      width: 100%;
+      border-radius: 12px;
+    }
+    .story-title {
+      margin: 10px 0 5px;
+      color: #222;
+    }
+    .story-author, .story-date {
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .story-intro {
+      font-style: italic;
+      margin-top: 8px;
+      color: #333;
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <h1>All Blog Stories</h1>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="stories.html">Stories</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="index.html">🏠 Home</a>
+      <a href="stories.html">📖 Stories</a>
+      <a href="about.html">ℹ️ About</a>
+      <a href="contact.html">✉️ Contact</a>
     </nav>
   </header>
 
   <main>
-    <div class="post">
-      <img src="images/story1.jpg" alt="First Blog Image" width="100%">
-      <h2>My First Blog Post</h2>
-      <p>This is a short intro of the post...</p>
-      <a href="post1.html">Read More</a>
-    </div>
-
-    <div class="post">
-      <img src="images/story2.jpg" alt="Second Blog Image" width="100%">
-      <h2>Second Blog Post</h2>
-      <p>Another intro text for the second blog post...</p>
-      <a href="post2.html">Read More</a>
-    </div>
-
-    <div class="post">
-      <img src="images/story3.jpg" alt="Third Blog Image" width="100%">
-      <h2>Third Blog Post</h2>
-      <p>Short intro for the third blog post...</p>
-      <a href="post3.html">Read More</a>
-    </div>
+    <section id="stories-container">
+      <p>Loading stories...</p>
+    </section>
   </main>
 
   <footer>
-    <p>© 2025 My Blog - All Rights Reserved</p>
+    <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
   </footer>
-</body>
-</html>
-<script src="script.js"></script>
-</body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stories - My Blog</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-  <h1>Stories</h1>
-  <div id="stories"></div> <!-- JS yahan stories inject karega -->
-
-  <!-- Script at the end of body -->
+  <!-- ✅ Script connection -->
   <script type="module" src="script.js"></script>
 </body>
 </html>
-https://YOUR_PROJECT_ID.supabase.co
-<script type="module" src="script.js"></script>

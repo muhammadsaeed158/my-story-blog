@@ -1,14 +1,17 @@
-// ✅ Supabase Client Import via CDN
+// ✅ Import Supabase client via CDN
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// ✅ Your Supabase Project Credentials
+// ✅ Supabase credentials
 const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE';
 
-// ✅ Initialize Supabase Client
+// ✅ Initialize Supabase client
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ✅ Container where stories will display
+// ✅ Backend URL
+const BACKEND_URL = 'https://myblog-backend-4xr8vcky4ba7.muhammadsaeed158.deno.net/';
+
+// ✅ Container where stories will appear
 const container = document.getElementById('stories-container');
 
 // ✅ Fetch stories from Supabase
@@ -28,6 +31,7 @@ async function fetchStories() {
       .order('id', { ascending: false });
 
     if (error) throw error;
+
     displayStories(data);
   } catch (err) {
     console.error('⚠️ Error fetching stories:', err.message);
@@ -35,19 +39,18 @@ async function fetchStories() {
   }
 }
 
-// ✅ Display stories in HTML
+// ✅ Display stories dynamically
 function displayStories(stories) {
   container.innerHTML = '';
 
   if (!stories || stories.length === 0) {
-    container.innerHTML = '<p>No stories found yet.</p>';
+    container.innerHTML = '<p>No stories found.</p>';
     return;
   }
 
   stories.forEach(story => {
     const card = document.createElement('div');
     card.className = 'story-card';
-
     card.innerHTML = `
       <div class="story-img-box">
         <img src="${story.image_url || 'images/default.jpg'}" alt="${story.title}" class="story-img"/>
@@ -64,13 +67,18 @@ function displayStories(stories) {
   });
 }
 
-// ✅ Fetch stories when page loads
-document.addEventListener('DOMContentLoaded', fetchStories);
-
-// ✅ Footer auto year update
+// ✅ Footer auto-update year
 document.addEventListener('DOMContentLoaded', () => {
   const yearSpan = document.getElementById('year');
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
+  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 });
+
+// ✅ Fetch stories on page load
+document.addEventListener('DOMContentLoaded', fetchStories);
+
+// ✅ Example of calling your backend (optional)
+// async function fetchFromBackend() {
+//   const res = await fetch(`${BACKEND_URL}/endpoint`);
+//   const data = await res.json();
+//   console.log('Backend data:', data);
+// }

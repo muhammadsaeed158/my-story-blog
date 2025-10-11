@@ -6,7 +6,7 @@
   <title>Stories - My Blog</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* Optional quick styling */
+    /* Quick inline styling for stories */
     .story-card {
       border: 1px solid #ddd;
       border-radius: 12px;
@@ -34,8 +34,8 @@
     }
   </style>
 </head>
-
 <body>
+
   <header>
     <h1>All Blog Stories</h1>
     <nav>
@@ -47,16 +47,17 @@
   </header>
 
   <main>
-    <section id="stories-container">
+    <!-- Container where stories will be injected -->
+    <div id="stories-container">
       <p>Loading stories...</p>
-    </section>
+    </div>
   </main>
 
   <footer>
     <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
   </footer>
 
-  <!-- ✅ Script connection -->
+  <!-- Script connection -->
   <script type="module" src="script.js"></script>
 </body>
 </html>

@@ -1,216 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Blog</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>Welcome to My Blog</h1>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#">Stories</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-    </nav>
-  </header>
-
-  <main>
-    <article>
-      <h2>My First Blog Post</h2>
-      <p>This is the starting point of my professional blog website.</p>
-    </article>
-  </main>
-
-  <footer>
-    <p>© 2025 My Blog - All Rights Reserved</p>
-  </footer>
-</body>
-</html>
-<article>
-  <h2>Second Blog Post</h2>
-  <p>Here is another sample post to show multiple stories.</p>
-</article>
-<link rel="stylesheet" href="style.css">
-<a href="index.html">Home</a>
-<a href="stories.html">Stories</a>
-<a href="about.html">About</a>
-<a href="contact.html">Contact</a>
-<form id="contactForm">
-  <input type="text" id="name" placeholder="Your Name">
-  <input type="email" id="email" placeholder="Your Email">
-  <textarea id="message" placeholder="Your Message"></textarea>
-  <button type="submit">Send</button>
-</form>
-<body>
-<a href="index.html" class="active">Home</a>
-<script src="script.js"></script>
-</body>
-</main>
-<script src="script.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My Blog</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f9;
-      padding: 20px;
-    }
-    .post {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .read-more-btn {
-      background: #007BFF;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .read-more-btn:hover {
-      background: #0056b3;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="post">
-    <p class="short-text">
-      This is a short intro of the first post...
-    </p>
-    <p class="more-text" style="display: none;">
-      This is the full content of the first post. You can write complete details here. 
-      Add more text, images, or links if you want.
-    </p>
-    <button class="read-more-btn">Read More</button>
-  </div>
-
-  <div class="post">
-    <p class="short-text">
-      This is a short intro of the second post...
-    </p>
-    <p class="more-text" style="display: none;">
-      This is the full content of the second post. Here is another story with more details.
-    </p>
-    <button class="read-more-btn">Read More</button>
-  </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const buttons = document.querySelectorAll(".read-more-btn");
-      buttons.forEach(function (btn) {
-        btn.addEventListener("click", function () {
-          const post = btn.closest(".post");
-          const moreText = post.querySelector(".more-text");
-          if (moreText.style.display === "none" || moreText.style.display === "") {
-            moreText.style.display = "block";
-            btn.innerText = "Read Less";
-          } else {
-            moreText.style.display = "none";
-            btn.innerText = "Read More";
-          }
-        });
-      });
-    });
-  </script>
-</body>
-</html>
-<script src="script.js"></script>
-<div class="post">
-  <p class="short-text">
-    This is a short intro of Post 1. It will be cut after 3 lines with dots...
-  </p>
-
-  <p class="more-text">
-    👋 This is the full content of Post 1. Yahan aap apni puri story likh sakte ho. 
-    Jab "Read More" dabayenge to yeh visible hoga aur dots wali text hide ho jayegi.
-  </p>
-
-  <button class="read-more-btn">Read More</button>
-</div>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Blog</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>My Blog Stories</h1>
-
-  <!-- Stories container -->
-  <div id="stories"></div>
-
-  <!-- Supabase client -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Custom script -->
-  <script src="script.js"></script>
-</body>
-</html>
-<div id="stories"></div>
-<!DOCTYPE html>
-<html lang="en">
-<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stories - My Blog</title>
-<link rel="stylesheet" href="style.css">
+<title>Home - My Blog</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
+  body { background:#f8f9fa; color:#333; }
+
+  header {
+    position: sticky;
+    top:0;
+    background:#fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    z-index:1000;
+    padding:1rem;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 { font-weight:700; font-size:1.8rem; color:#222; }
+  nav a {
+    text-decoration:none;
+    color:#555;
+    font-weight:600;
+    margin-left:15px;
+    transition: color 0.3s;
+  }
+  nav a:hover { color:#007bff; }
+  #logoutBtn { margin-left:15px; background:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:6px; cursor:pointer; }
+
+  .hero {
+    height:50vh;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('images/hero-bg.jpg') center/cover no-repeat;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:#fff;
+  }
+  .hero h2 { font-size:2.8rem; font-weight:700; margin-bottom:1rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.5);}
+  .hero p { font-size:1.2rem; margin-bottom:1.5rem; text-shadow:1px 1px 4px rgba(0,0,0,0.5);}
+  .hero button { padding:0.8rem 2rem; border:none; background:#007bff; color:#fff; font-weight:600; border-radius:50px; cursor:pointer; transition: all 0.3s; }
+  .hero button:hover { background:#0056b3; transform:scale(1.05); }
+
+  .section { max-width:1200px; margin: 3rem auto; padding:0 1rem; }
+  .section h2 { text-align:center; font-size:2rem; margin-bottom:2rem; color:#222; }
+
+  .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:2rem; }
+  .card { background:#fff; border-radius:15px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; }
+  .card:hover { transform: translateY(-5px); box-shadow:0 8px 25px rgba(0,0,0,0.15); }
+  .card img { width:100%; height:200px; object-fit:cover; }
+  .card .content { padding:1rem; }
+  .card .title { font-weight:700; font-size:1.2rem; margin-bottom:0.5rem; }
+  .card .intro { font-style:italic; color:#555; margin-bottom:1rem; }
+  .card .meta { font-size:0.85rem; color:#888; display:flex; justify-content:space-between; }
+
+  footer { background:#222; color:#fff; padding:2rem 1rem; text-align:center; }
+  footer .social-icons { margin:1rem 0; }
+  footer .social-icons a { color:#fff; margin:0 0.5rem; font-size:1.5rem; transition: color 0.3s; }
+  footer .social-icons a:hover { color:#007bff; }
+
+  @media(max-width:600px){
+    .hero h2 { font-size:2rem; }
+    .hero p { font-size:1rem; }
+  }
+</style>
 </head>
 <body>
-  <h1>Stories</h1>
-  <div id="stories"></div>
-  <script type="module" src="script.js"></script>
-</body>
-</html>
-<div id="stories-container"></div>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Story Blog</title>
 
-  <!-- Vercel Speed Insights -->
-  <script defer src="/node_modules/@vercel/speed-insights/dist/index.js"></script>
-</head>
-<body>
-  <h1>Welcome to My Story Blog</h1>
-  <p>This is a test page.</p>
+<header>
+  <h1>My Blog</h1>
+  <nav>
+    <a href="home.html" class="active">Home</a>
+    <a href="stories.html">Stories</a>
+    <a href="article.html">Articles</a>
+    <a href="videos.html">Videos</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <button id="logoutBtn">Logout</button>
+  </nav>
+</header>
 
-  <!-- Vercel Speed Insights init -->
-  <script>
-    window.vcs = window.vcs || [];
-  </script>
-</body>
-</html>
-import { Analytics } from '@vercel/analytics/next';
- 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <head>
-        <title>Next.js</title>
-      </head>
-      <body>
-        {children}
-        <Analytics />
-      </body>
-    </html>
-  );
+<section class="hero">
+  <h2>Welcome Back!</h2>
+  <p>Explore the latest stories, articles, and videos daily.</p>
+  <button onclick="window.location.href='stories.html'">Read Stories</button>
+</section>
+
+<section class="section" id="stories-section">
+  <h2>Featured Stories</h2>
+  <div class="grid" id="stories-container">
+    <p>Loading stories...</p>
+  </div>
+</section>
+
+<section class="section" id="articles-section">
+  <h2>Latest Articles</h2>
+  <div class="grid" id="articles-container">
+    <p>Loading articles...</p>
+  </div>
+</section>
+
+<section class="section" id="videos-section">
+  <h2>Latest Videos</h2>
+  <div class="grid" id="videos-container">
+    <p>Loading videos...</p>
+  </div>
+</section>
+
+<footer>
+  <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
+  <div class="social-icons">
+    <a href="https://www.youtube.com/@MakeHome-k4e" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://www.tiktok.com/@halal.laugh.uk.funny786" target="_blank"><i class="fab fa-tiktok"></i></a>
+    <a href="https://www.facebook.com/profile.php?id=61579375657137" target="_blank"><i class="fab fa-facebook"></i></a>
+    <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
+    <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+</footer>
+
+<script type="module">
+import { supabase } from './supabase.js';
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const logoutBtn = document.getElementById('logoutBtn');
+logoutBtn.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.href='login.html';
+});
+
+// Fetch Stories
+const storiesContainer = document.getElementById('stories-container');
+async function fetchStories() {
+  const { data, error } = await supabase.from('stories').select('*').order('id',{ascending:false});
+  if(error){ storiesContainer.innerHTML='<p style="color:red;">Failed to load stories.</p>'; return; }
+  storiesContainer.innerHTML='';
+  data.forEach(story=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`
+      <img src="${story.image_url||'images/default.jpg'}">
+      <div class="content">
+        <h3 class="title">${story.title}</h3>
+        <p class="intro">${story.short_intro||''}</p>
+        <div class="meta"><span>👤 ${story.author||'Unknown'}</span><span>🕓 ${new Date(story.created_at).toLocaleDateString()}</span></div>
+      </div>
+    `;
+    storiesContainer.appendChild(card);
+  });
 }
+fetchStories();
+
+// Fetch Articles
+const articlesContainer = document.getElementById('articles-container');
+async function fetchArticles() {
+  const { data, error } = await supabase.from('articles').select('*').order('id',{ascending:false});
+  if(error){ articlesContainer.innerHTML='<p style="color:red;">Failed to load articles.</p>'; return; }
+  articlesContainer.innerHTML='';
+  data.forEach(article=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`
+      <img src="${article.image_url||'images/default.jpg'}">
+      <div class="content">
+        <h3 class="title">${article.title}</h3>
+        <p class="intro">${article.short_intro||''}</p>
+      </div>
+    `;
+    articlesContainer

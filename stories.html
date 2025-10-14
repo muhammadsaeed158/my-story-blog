@@ -1,86 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stories - My Blog</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* Quick inline styling for stories */
-    .story-card {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 15px;
-      margin: 20px 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      background-color: #fff;
-    }
-    .story-img {
-      width: 100%;
-      border-radius: 12px;
-    }
-    .story-title {
-      margin: 10px 0 5px;
-      color: #222;
-    }
-    .story-author, .story-date {
-      font-size: 0.9rem;
-      color: #555;
-    }
-    .story-intro {
-      font-style: italic;
-      margin-top: 8px;
-      color: #333;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stories - My Blog</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .story-card {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background-color: #fff;
+    transition: transform 0.2s;
+  }
+  .story-card:hover { transform: scale(1.02); }
+  .story-img { width: 100%; border-radius: 12px; }
+  .story-title { margin: 10px 0 5px; color: #222; font-size: 1.5rem; }
+  .story-author, .story-date { font-size: 0.9rem; color: #555; }
+  .story-intro { font-style: italic; margin-top: 8px; color: #333; }
+</style>
 </head>
 <body>
+<header>
+  <h1>All Stories</h1>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="stories.html" class="active">Stories</a>
+    <a href="article.html">Articles</a>
+    <a href="videos.html">Videos</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="auth/login.html">Login</a>
+  </nav>
+</header>
 
-  <header>
-    <h1>All Blog Stories</h1>
-    <nav>
-      <a href="index.html">🏠 Home</a>
-      <a href="stories.html">📖 Stories</a>
-      <a href="about.html">ℹ️ About</a>
-      <a href="contact.html">✉️ Contact</a>
-    </nav>
-  </header>
+<main>
+  <div id="stories-container"><p>Loading stories...</p></div>
+</main>
 
-  <main>
-    <!-- Container where stories will be injected -->
-    <div id="stories-container">
-      <p>Loading stories...</p>
-    </div>
-  </main>
+<footer>
+  <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
+</footer>
 
-  <footer>
-    <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
-  </footer>
+<script type="module">
+import { supabase } from './supabase.js';
 
-  <!-- ✅ Script connections -->
-  <script type="module" src="script.js"></script>
+const container = document.getElementById('stories-container');
+const yearSpan = document.getElementById('year');
+if(yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-  <script type="module">
-    import { supabase } from './supabase.js';
+// Auth check
+(async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if(!user) window.location.href = 'login.html';
+})();
 
-    // ✅ Redirect if not logged in
-    (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        window.location.href = 'login.html';
-      }
-    })();
+// Logout button
+const nav = document.querySelector('nav');
+const logoutBtn = document.createElement('button');
+logoutBtn.textContent = 'Logout';
+logoutBtn.style.marginLeft = '10px';
+logoutBtn.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.href = 'login.html';
+});
+nav.appendChild(logoutBtn);
 
-    // ✅ Add logout button in nav
-    const nav = document.querySelector('nav');
-    const logoutBtn = document.createElement('button');
-    logoutBtn.textContent = 'Logout';
-    logoutBtn.style.marginLeft = '10px';
-    logoutBtn.addEventListener('click', async () => {
-      await supabase.auth.signOut();
-      window.location.href = 'login.html';
+// Fetch stories
+async function fetchStories() {
+  try {
+    const { data, error } = await supabase.from('stories').select('*').order('id', { ascending: false });
+    if(error) throw error;
+
+    container.innerHTML = '';
+    if(!data || data.length === 0) {
+      container.innerHTML = '<p>No stories found.</p>';
+      return;
+    }
+
+    data.forEach(story => {
+      const card = document.createElement('div');
+      card.className = 'story-card';
+      card.innerHTML = `
+        <img src="${story.image_url || 'images/default.jpg'}" class="story-img"/>
+        <h2 class="story-title">${story.title}</h2>
+        <p class="story-author">👤 By: ${story.author || 'Unknown Author'}</p>
+        <p class="story-date">🕓 ${new Date(story.created_at).toLocaleDateString()}</p>
+        <p class="story-intro">${story.short_intro || ''}</p>
+        <p class="story-full">${story.content}</p>
+      `;
+      container.appendChild(card);
     });
-    nav.appendChild(logoutBtn);
-  </script>
+  } catch(err) {
+    console.error('Error fetching stories:', err.message);
+    container.innerHTML = `<p style="color:red;">Failed to load stories.</p>`;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', fetchStories);
+</script>
 </body>
 </html>

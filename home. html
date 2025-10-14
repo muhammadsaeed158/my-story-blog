@@ -1,180 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home - My Blog</title>
-
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-<!-- FontAwesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif; }
-  body { background:#f8f9fa; color:#333; }
-
-  header {
-    position: sticky;
-    top:0;
-    background:#fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    z-index:1000;
-    padding:1rem;
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  header h1 { font-weight:700; font-size:1.8rem; color:#222; }
-  nav a {
-    text-decoration:none;
-    color:#555;
-    font-weight:600;
-    margin-left:15px;
-    transition: color 0.3s;
-  }
-  nav a:hover { color:#007bff; }
-  #logoutBtn { margin-left:15px; background:#007bff; color:#fff; border:none; padding:5px 10px; border-radius:6px; cursor:pointer; }
-
-  .hero {
-    height:50vh;
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('images/hero-bg.jpg') center/cover no-repeat;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    color:#fff;
-  }
-  .hero h2 { font-size:2.8rem; font-weight:700; margin-bottom:1rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.5);}
-  .hero p { font-size:1.2rem; margin-bottom:1.5rem; text-shadow:1px 1px 4px rgba(0,0,0,0.5);}
-  .hero button { padding:0.8rem 2rem; border:none; background:#007bff; color:#fff; font-weight:600; border-radius:50px; cursor:pointer; transition: all 0.3s; }
-  .hero button:hover { background:#0056b3; transform:scale(1.05); }
-
-  .section { max-width:1200px; margin: 3rem auto; padding:0 1rem; }
-  .section h2 { text-align:center; font-size:2rem; margin-bottom:2rem; color:#222; }
-
-  .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:2rem; }
-  .card { background:#fff; border-radius:15px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; }
-  .card:hover { transform: translateY(-5px); box-shadow:0 8px 25px rgba(0,0,0,0.15); }
-  .card img { width:100%; height:200px; object-fit:cover; }
-  .card .content { padding:1rem; }
-  .card .title { font-weight:700; font-size:1.2rem; margin-bottom:0.5rem; }
-  .card .intro { font-style:italic; color:#555; margin-bottom:1rem; }
-  .card .meta { font-size:0.85rem; color:#888; display:flex; justify-content:space-between; }
-
-  footer { background:#222; color:#fff; padding:2rem 1rem; text-align:center; }
-  footer .social-icons { margin:1rem 0; }
-  footer .social-icons a { color:#fff; margin:0 0.5rem; font-size:1.5rem; transition: color 0.3s; }
-  footer .social-icons a:hover { color:#007bff; }
-
-  @media(max-width:600px){
-    .hero h2 { font-size:2rem; }
-    .hero p { font-size:1rem; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - My Blog</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #eef2f3;
+      margin: 0;
+    }
+    header {
+      background: #007BFF;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 { margin: 0; }
+    nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .content {
+      padding: 20px;
+    }
+    .video-section, .article-section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .logout-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .logout-btn:hover {
+      background: #b02a37;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <h1>My Blog</h1>
-  <nav>
-    <a href="home.html" class="active">Home</a>
-    <a href="stories.html">Stories</a>
-    <a href="article.html">Articles</a>
-    <a href="videos.html">Videos</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <button id="logoutBtn">Logout</button>
-  </nav>
-</header>
+  <header>
+    <h1>Welcome to My Blog</h1>
+    <nav>
+      <a href="#">Videos</a>
+      <a href="#">Articles</a>
+      <a href="contact.html">Contact</a>
+      <button id="logout" class="logout-btn">Logout</button>
+    </nav>
+  </header>
 
-<section class="hero">
-  <h2>Welcome Back!</h2>
-  <p>Explore the latest stories, articles, and videos daily.</p>
-  <button onclick="window.location.href='stories.html'">Read Stories</button>
-</section>
+  <div class="content">
+    <section class="video-section">
+      <h2>🎥 Latest Videos</h2>
+      <p>Coming soon... Stay tuned!</p>
+    </section>
 
-<section class="section" id="stories-section">
-  <h2>Featured Stories</h2>
-  <div class="grid" id="stories-container">
-    <p>Loading stories...</p>
+    <section class="article-section">
+      <h2>📰 Latest Articles</h2>
+      <p>Read the latest stories and posts from our users.</p>
+    </section>
   </div>
-</section>
 
-<section class="section" id="articles-section">
-  <h2>Latest Articles</h2>
-  <div class="grid" id="articles-container">
-    <p>Loading articles...</p>
-  </div>
-</section>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient('https://ynvhluadxmsjoihdjmky.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'
+    );
 
-<section class="section" id="videos-section">
-  <h2>Latest Videos</h2>
-  <div class="grid" id="videos-container">
-    <p>Loading videos...</p>
-  </div>
-</section>
+    // ✅ Check if logged in
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) {
+        window.location.href = 'login.html';
+      }
+    });
 
-<footer>
-  <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
-  <div class="social-icons">
-    <a href="https://www.youtube.com/@MakeHome-k4e" target="_blank"><i class="fab fa-youtube"></i></a>
-    <a href="https://www.tiktok.com/@halal.laugh.uk.funny786" target="_blank"><i class="fab fa-tiktok"></i></a>
-    <a href="https://www.facebook.com/profile.php?id=61579375657137" target="_blank"><i class="fab fa-facebook"></i></a>
-    <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
-    <a href="https://instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
-  </div>
-</footer>
+    // ✅ Logout
+    document.getElementById('logout').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      window.location.href = 'login.html';
+    });
+  </script>
 
-<script type="module">
-import { supabase } from './supabase.js';
-
-document.getElementById('year').textContent = new Date().getFullYear();
-
-const logoutBtn = document.getElementById('logoutBtn');
-logoutBtn.addEventListener('click', async () => {
-  await supabase.auth.signOut();
-  window.location.href='login.html';
-});
-
-// Fetch Stories
-const storiesContainer = document.getElementById('stories-container');
-async function fetchStories() {
-  const { data, error } = await supabase.from('stories').select('*').order('id',{ascending:false});
-  if(error){ storiesContainer.innerHTML='<p style="color:red;">Failed to load stories.</p>'; return; }
-  storiesContainer.innerHTML='';
-  data.forEach(story=>{
-    const card=document.createElement('div');
-    card.className='card';
-    card.innerHTML=`
-      <img src="${story.image_url||'images/default.jpg'}">
-      <div class="content">
-        <h3 class="title">${story.title}</h3>
-        <p class="intro">${story.short_intro||''}</p>
-        <div class="meta"><span>👤 ${story.author||'Unknown'}</span><span>🕓 ${new Date(story.created_at).toLocaleDateString()}</span></div>
-      </div>
-    `;
-    storiesContainer.appendChild(card);
-  });
-}
-fetchStories();
-
-// Fetch Articles
-const articlesContainer = document.getElementById('articles-container');
-async function fetchArticles() {
-  const { data, error } = await supabase.from('articles').select('*').order('id',{ascending:false});
-  if(error){ articlesContainer.innerHTML='<p style="color:red;">Failed to load articles.</p>'; return; }
-  articlesContainer.innerHTML='';
-  data.forEach(article=>{
-    const card=document.createElement('div');
-    card.className='card';
-    card.innerHTML=`
-      <img src="${article.image_url||'images/default.jpg'}">
-      <div class="content">
-        <h3 class="title">${article.title}</h3>
-        <p class="intro">${article.short_intro||''}</p>
-      </div>
-    `;
-    articlesContainer
+</body>
+</html>

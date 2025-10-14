@@ -380,9 +380,11 @@ button {
 button:hover {
   background: #0056b3;
 }
-
-
-
+.loading {
+  text-align: center;
+  font-style: italic;
+  color: #007bff;
+}
 
 
 

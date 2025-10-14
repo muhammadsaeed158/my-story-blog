@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Videos - My Blog</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family:'Poppins',sans-serif; background:#f8f9fa; margin:0; }
+    header { background:#fff; padding:1rem; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+    header h1 { margin:0; font-size:1.8rem; color:#222;}
+    nav { display:flex; gap:1rem; justify-content:center; margin-top:0.5rem;}
+    nav a { text-decoration:none; color:#555; font-weight:600; position:relative; }
+    nav a::after { content:''; position:absolute; width:0; height:2px; left:0; bottom:-2px; background:#007bff; transition: width 0.3s; }
+    nav a:hover::after { width:100%; }
+    nav a:hover { color:#007bff; }
+    main { max-width:1200px; margin:2rem auto; padding:0 1rem; }
+    h2 { text-align:center; margin-bottom:2rem; color:#222; }
+    .video-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem; }
+    .video-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition:transform 0.3s; }
+    .video-card:hover { transform:translateY(-5px); }
+    .video-card iframe, .video-card video { width:100%; height:200px; display:block; }
+    .video-card .video-content { padding:1rem; }
+    .video-card .video-title { font-weight:700; font-size:1.2rem; margin-bottom:0.5rem; }
+    .video-card .video-desc { font-size:0.95rem; color:#555; }
+    footer { background:#222; color:#fff; text-align:center; padding:2rem 1rem; margin-top:3rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>My Blog - Videos</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stories.html">Stories</a>
+      <a href="articles.html">Articles</a>
+      <a href="videos.html" class="active">Videos</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Latest Videos</h2>
+    <div class="video-grid" id="videos-container">
+      <p>Loading videos...</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
+  </footer>
+
+  <script type="module">
+    const yearSpan = document.getElementById('year');
+    if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+    // Example video data (You can fetch this dynamically from Supabase or backend)
+    const videos = [
+      {
+        title: "Funny TikTok Compilation",
+        desc: "Laugh out loud with this viral TikTok compilation!",
+        embed: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+      },
+      {
+        title: "Motivational Video",
+        desc: "Start your day with positivity!",
+        embed: "https://www.youtube.com/embed/ZXsQAXx_ao0"
+      },
+      {
+        title: "Travel Vlog",
+        desc: "Explore the world with us!",
+        embed: "https://www.youtube.com/embed/ysz5S6PUM-U"
+      }
+    ];
+
+    const container = document.getElementById('videos-container');
+    container.innerHTML = '';
+    videos.forEach(video => {
+      const card = document.createElement('div');
+      card.className = 'video-card';
+      card.innerHTML = `
+        <iframe src="${video.embed}" frameborder="0" allowfullscreen></iframe>
+        <div class="video-content">
+          <h3 class="video-title">${video.title}</h3>
+          <p class="video-desc">${video.desc}</p>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>

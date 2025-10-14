@@ -1,11 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact - My Blog</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- FontAwesome Icons -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #f9f9f9);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0077cc, #00c6ff);
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a.active {
+      border-bottom: 2px solid #fff;
+    }
+
+    main {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+      color: #333;
+    }
+
+    p {
+      text-align: center;
+      color: #555;
+    }
+
+    ul.social-links {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    ul.social-links li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f5f9ff;
+      margin: 10px 0;
+      padding: 12px 18px;
+      border-radius: 10px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    ul.social-links li:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    ul.social-links a {
+      text-decoration: none;
+      color: #0077cc;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    ul.social-links a i {
+      font-size: 1.3rem;
+    }
+
+    .copy-btn {
+      background: linear-gradient(90deg, #0077cc, #00c6ff);
+      border: none;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .copy-btn:hover {
+      background: linear-gradient(90deg, #005fa3, #0096c7);
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    input, textarea {
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #0077cc;
+      box-shadow: 0 0 6px rgba(0,119,204,0.3);
+    }
+
+    textarea {
+      resize: vertical;
+      height: 120px;
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(90deg, #00c6ff, #0077cc);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      letter-spacing: 0.5px;
+      box-shadow: 0 3px 8px rgba(0,119,204,0.3);
+    }
+
+    button[type="submit"]:hover {
+      background: linear-gradient(90deg, #0077cc, #00c6ff);
+      transform: scale(1.03);
+    }
+
+    footer {
+      text-align: center;
+      background: #0077cc;
+      color: #fff;
+      padding: 15px 0;
+      margin-top: 30px;
+      font-size: 0.95rem;
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <h1>Contact Me</h1>
@@ -13,32 +177,120 @@
       <a href="index.html">Home</a>
       <a href="stories.html">Stories</a>
       <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="articles.html">Articles</a>
+      <a href="folder/videos.html">Videos</a>
+      <a href="login.html">Login</a>
     </nav>
   </header>
 
   <main>
     <h2>Get in Touch</h2>
-    <p>Email: yourname@email.com</p>
-    <p>Follow me on social media:</p>
-    <ul>
-      <li><a href="#">Facebook</a></li>
-      <li><a href="#">Twitter</a></li>
-      <li><a href="#">Instagram</a></li>
+    <p>📩 Email: <strong>yourname@email.com</strong></p>
+
+    <h3>Follow me on social media:</h3>
+    <ul class="social-links">
+      <li>
+        <a href="https://m.tiktok.com/@halal.laugh.uk.funny786" target="_blank">
+          <i class="fab fa-tiktok"></i> TikTok
+        </a>
+        <button class="copy-btn" data-link="https://m.tiktok.com/@halal.laugh.uk.funny786">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+      </li>
+      <li>
+        <a href="https://www.youtube.com/@MakeHome-k4e" target="_blank">
+          <i class="fab fa-youtube"></i> YouTube
+        </a>
+        <button class="copy-btn" data-link="https://www.youtube.com/@MakeHome-k4e">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+      </li>
+      <li>
+        <a href="https://m.facebook.com/profile.php?id=61579375657137" target="_blank">
+          <i class="fab fa-facebook"></i> Facebook
+        </a>
+        <button class="copy-btn" data-link="https://m.facebook.com/profile.php?id=61579375657137">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+      </li>
+      <li>
+        <a href="https://twitter.com/" target="_blank">
+          <i class="fab fa-twitter"></i> Twitter
+        </a>
+        <button class="copy-btn" data-link="https://twitter.com/">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+      </li>
+      <li>
+        <a href="https://instagram.com/" target="_blank">
+          <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <button class="copy-btn" data-link="https://instagram.com/">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+      </li>
     </ul>
+
+    <h3>Send Me a Message 💬</h3>
+    <form id="contactForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
+      <textarea id="message" placeholder="Write your message here..." required></textarea>
+      <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
+    </form>
   </main>
 
   <footer>
-    <p>© 2025 My Blog - All Rights Reserved</p>
+    <p>© <span id="year"></span> My Blog — All Rights Reserved</p>
   </footer>
+
+  <!-- ✅ Supabase Script -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co';
+    const SUPABASE_KEY =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // ✅ Copy Button Functionality
+    document.querySelectorAll('.copy-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const link = btn.getAttribute('data-link');
+        await navigator.clipboard.writeText(link);
+        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => (btn.innerHTML = '<i class="fas fa-copy"></i> Copy'), 1500);
+      });
+    });
+
+    // ✅ Contact Form Submission
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        alert('⚠️ Please fill all fields!');
+        return;
+      }
+
+      const { error } = await supabase.from('messages').insert([{ name, email, message }]);
+
+      if (error) {
+        alert('❌ Failed to send message: ' + error.message);
+      } else {
+        alert('✅ Message sent successfully!');
+        form.reset();
+      }
+    });
+
+    // ✅ Auto Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
-<form id="contactForm">
-  <input type="text" id="name" placeholder="Your Name">
-  <input type="email" id="email" placeholder="Your Email">
-  <textarea id="message" placeholder="Your Message"></textarea>
-  <button type="submit">Send</button>
-</form>
-<script src="script.js"></script>
-</body>
-<button id="testBtn">Click Me</button>

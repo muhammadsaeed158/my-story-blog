@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Articles - My Blog</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f9fafb;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #222;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    nav a.active {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    main {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+      color: #222;
+    }
+    .article-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      transition: transform 0.2s;
+    }
+    .article-card:hover {
+      transform: translateY(-5px);
+    }
+    .article-card h3 {
+      margin: 0;
+      color: #0077cc;
+    }
+    .article-meta {
+      font-size: 14px;
+      color: #777;
+      margin: 5px 0 15px;
+    }
+    .article-summary {
+      font-size: 16px;
+      color: #444;
+    }
+    .read-more {
+      display: inline-block;
+      margin-top: 10px;
+      background: #0077cc;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+    .read-more:hover {
+      background: #005fa3;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #222;
+      color: #fff;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Daily Articles</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stories.html">Stories</a>
+      <a href="articles.html" class="active">Articles</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Latest Articles</h2>
+    <div id="articlesContainer"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 My Blog - All Rights Reserved</p>
+  </footer>
+
+  <script type="module">
+    // Example: You can connect Supabase here later for dynamic articles
+    const articles = [
+      {
+        title: "How to Stay Motivated Every Day",
+        author: "Kalsoom Saeed",
+        date: "October 13, 2025",
+        summary: "Discover simple habits that can help you stay positive and productive, even on tough days."
+      },
+      {
+        title: "Top 5 Morning Routines for Success",
+        author: "Kalsoom Saeed",
+        date: "October 12, 2025",
+        summary: "Morning routines can change your life. Here are five habits that successful people swear by."
+      },
+      {
+        title: "Why Gratitude is the Secret to Happiness",
+        author: "Kalsoom Saeed",
+        date: "October 11, 2025",
+        summary: "A thankful heart creates a happy mind. Learn how gratitude reshapes your daily perspective."
+      }
+    ];
+
+    const container = document.getElementById("articlesContainer");
+
+    articles.forEach(article => {
+      const div = document.createElement("div");
+      div.className = "article-card";
+      div.innerHTML = `
+        <h3>${article.title}</h3>
+        <p class="article-meta">By ${article.author} | ${article.date}</p>
+        <p class="article-summary">${article.summary}</p>
+        <a href="#" class="read-more">Read More</a>
+      `;
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>

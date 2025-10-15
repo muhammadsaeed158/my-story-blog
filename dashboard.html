@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - My Blog</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Author Dashboard</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stories.html">Stories</a>
+    <button id="logoutBtn">Logout</button>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Submit New Story</h2>
+    <form id="storyForm">
+      <input type="text" placeholder="Title" id="title" required>
+      <input type="text" placeholder="Short Intro" id="short_intro">
+      <input type="url" placeholder="Image URL" id="image_url">
+      <textarea placeholder="Content" id="content" required></textarea>
+      <button type="submit">Publish Story</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Your Stories</h2>
+    <div id="my-stories"></div>
+  </section>
+</main>
+
+<footer>
+  <p>© <span id="year"></span> My Blog</p>
+</footer>
+
+<script type="module" src="dashboard.js"></script>
+</body>
+</html>

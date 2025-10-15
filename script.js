@@ -1,6 +1,6 @@
 import { supabase } from './supabase.js';
 
-const BACKEND_URL = 'https://myblog-backend.muhammadsaeed158.deno.net';
+const BACKEND_URL = 'https://my-blog-api.deno.dev';
 
 // Set footer year dynamically
 document.getElementById('year').textContent = new Date().getFullYear();

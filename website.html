@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Blog - Website Demo</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+    body{background:#f8f9fa;color:#222;}
+    header{
+      background:#007bff;color:#fff;padding:1.2rem 2rem;text-align:center;
+      box-shadow:0 3px 10px rgba(0,0,0,0.1);
+    }
+    header h1{font-size:2rem;font-weight:700;cursor:pointer;}
+    nav ul{list-style:none;display:flex;justify-content:center;flex-wrap:wrap;gap:20px;margin-top:10px;}
+    nav ul li a{color:#fff;text-decoration:none;font-weight:600;transition:.3s;}
+    nav ul li a:hover{color:#ffd700;transform:scale(1.05);}
+    .demo-section{max-width:1200px;margin:3rem auto;text-align:center;padding:0 1rem;}
+    .demo-section h2{font-size:2rem;color:#333;margin-bottom:1.5rem;}
+    .demo-section p{margin-bottom:2rem;color:#555;}
+    .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;}
+    .video-card{
+      background:#fff;border-radius:15px;overflow:hidden;
+      box-shadow:0 4px 15px rgba(0,0,0,0.1);transition:all .3s;
+    }
+    .video-card:hover{transform:translateY(-5px);box-shadow:0 8px 25px rgba(0,0,0,0.15);}
+    .video-card iframe{width:100%;height:200px;border:none;border-bottom:3px solid #007bff;}
+    .video-card .content{padding:1rem;}
+    .video-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.5rem;}
+    .video-card p{color:#666;font-size:.9rem;}
+    footer{background:#222;color:#fff;padding:2rem 1rem;text-align:center;}
+    footer p{margin-bottom:1rem;}
+    .social-icons a{margin:0 .5rem;font-size:1.6rem;transition:color .3s;}
+    .social-icons a.youtube{color:#FF0000;}
+    .social-icons a.tiktok{color:#69C9D0;}
+    .social-icons a.facebook{color:#1877F2;}
+    .social-icons a.twitter{color:#1DA1F2;}
+    .social-icons a.instagram{color:#C13584;}
+    .social-icons a:hover{opacity:.8;}
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1 onclick="window.location.href='index.html'">🌐 My Blog</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="stories.html">Stories</a></li>
+        <li><a href="articles.html">Articles</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="settings.html">Settings</a></li>
+        <li><a href="login.html">Sign In</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="demo-section">
+    <h2>My Blog Website Demo 🎥</h2>
+    <p>Watch how our blog works — simple, fast, and beautiful.</p>
+
+    <div class="video-grid">
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/aqz-KE-bpKQ" allowfullscreen></iframe>
+        <div class="content">
+          <h3>Welcome to My Blog</h3>
+          <p>Discover creative stories and experiences shared daily.</p>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+        <div class="content">
+          <h3>Create and Share Content</h3>
+          <p>Learn how to publish your own stories and videos.</p>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/5qap5aO4i9A" allowfullscreen></iframe>
+        <div class="content">
+          <h3>Live Dashboard Preview</h3>
+          <p>Track engagement and manage your profile smoothly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© <span id="year"></span> My Blog — All Rights Reserved</p>
+    <div class="social-icons">
+      <a href="https://www.youtube.com/@MakeHome-k4e" class="youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="https://tiktok.com/@halal.laugh.uk.funny786" class="tiktok" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=61579375657137&mibextid=ZbWKwL" class="facebook" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="#" class="twitter" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>

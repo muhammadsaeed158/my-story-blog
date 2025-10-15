@@ -1,20 +1,27 @@
-// ✅ Import Supabase client via CDN
+// ==========================
+// ✅ Supabase Setup
+// ==========================
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// ✅ Supabase credentials
 const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE';
 
-// ✅ Initialize Supabase client
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ✅ Backend URL
-const BACKEND_URL = 'https://myblog-backend-4xr8vcky4ba7.muhammadsaeed158.deno.net/';
+// ==========================
+// ✅ Backend Setup
+// ==========================
+const BACKEND_URL = 'https://myblog-backend.muhammadsaeed158.deno.net/';
 
-// ✅ Container where stories will appear
-const container = document.getElementById('stories-container');
+// ==========================
+// ✅ Containers
+// ==========================
+const storiesContainer = document.getElementById('stories-container');
+const postsContainer = document.getElementById('posts-container');
 
+// ==========================
 // ✅ Fetch stories from Supabase
+// ==========================
 async function fetchStories() {
   try {
     const { data, error } = await supabase
@@ -26,7 +33,7 @@ async function fetchStories() {
         content,
         image_url,
         created_at,
-        users(name)
+        author 
       `)
       .order('id', { ascending: false });
 
@@ -35,16 +42,16 @@ async function fetchStories() {
     displayStories(data);
   } catch (err) {
     console.error('⚠️ Error fetching stories:', err.message);
-    container.innerHTML = `<p style="color:red;">Failed to load stories. Please try again later.</p>`;
+    storiesContainer.innerHTML = `<p style="color:red;">Failed to load stories.</p>`;
   }
 }
 
-// ✅ Display stories dynamically
+// ✅ Display Supabase stories
 function displayStories(stories) {
-  container.innerHTML = '';
+  storiesContainer.innerHTML = '';
 
   if (!stories || stories.length === 0) {
-    container.innerHTML = '<p>No stories found.</p>';
+    storiesContainer.innerHTML = '<p>No stories found.</p>';
     return;
   }
 
@@ -63,22 +70,66 @@ function displayStories(stories) {
         <p class="story-full">${story.content}</p>
       </div>
     `;
-    container.appendChild(card);
+    storiesContainer.appendChild(card);
   });
 }
 
-// ✅ Footer auto-update year
+// ==========================
+// ✅ Fetch posts from backend
+// ==========================
+async function fetchPosts() {
+  try {
+    const res = await fetch(`${BACKEND_URL}/posts`);
+    const data = await res.json();
+
+    postsContainer.innerHTML = '';
+
+    data.posts.forEach(post => {
+      const div = document.createElement('div');
+      div.className = 'post-card';
+      div.innerHTML = `
+        <h3>${post.title}</h3>
+        <p>${post.content}</p>
+        <p>Author: ${post.author}</p>
+      `;
+      postsContainer.appendChild(div);
+    });
+
+  } catch (err) {
+    console.error('⚠️ Error fetching posts:', err);
+    postsContainer.innerHTML = `<p style="color:red;">Failed to load posts.</p>`;
+  }
+}
+
+// ==========================
+// ✅ Add story to backend
+// ==========================
+async function addStoryToBackend(story) {
+  try {
+    const res = await fetch(`${BACKEND_URL}/stories`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(story)
+    });
+
+    const data = await res.json();
+    console.log('New story added:', data);
+    alert('Story added successfully!');
+    
+    fetchPosts(); // Refresh posts list
+  } catch (err) {
+    console.error('⚠️ Error adding story:', err);
+    alert('Failed to add story.');
+  }
+}
+
+// ==========================
+// ✅ Footer year update
+// ==========================
 document.addEventListener('DOMContentLoaded', () => {
   const yearSpan = document.getElementById('year');
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+  fetchStories();
+  fetchPosts();
 });
-
-// ✅ Fetch stories on page load
-document.addEventListener('DOMContentLoaded', fetchStories);
-
-// ✅ Example of calling your backend (optional)
-// async function fetchFromBackend() {
-//   const res = await fetch(`${BACKEND_URL}/endpoint`);
-//   const data = await res.json();
-//   console.log('Backend data:', data);
-// }

@@ -1,30 +1,25 @@
-// ==========================
-// ✅ Supabase Setup
-// ==========================
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import { supabase } from './supabase.js';
 
-const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE';
+// Backend URL
+const BACKEND_URL = 'https://myblog-backend.muhammadsaeed158.deno.net';
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Footer year
+document.getElementById('year').textContent = new Date().getFullYear();
 
-// ==========================
-// ✅ Backend Setup
-// ==========================
-const BACKEND_URL = 'https://myblog-backend.muhammadsaeed158.deno.net/';
+// Logout button
+const logoutBtn = document.getElementById('logoutBtn');
+logoutBtn.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.href = 'login.html';
+});
 
-// ==========================
-// ✅ Containers
-// ==========================
+// ----------- FETCH STORIES -----------
 const storiesContainer = document.getElementById('stories-container');
-const postsContainer = document.getElementById('posts-container');
 
-// ==========================
-// ✅ Fetch stories from Supabase
-// ==========================
 async function fetchStories() {
   try {
-    const { data, error } = await supabase
+    // Supabase stories
+    const { data: sbStories, error: sbError } = await supabase
       .from('stories')
       .select(`
         id,
@@ -33,103 +28,108 @@ async function fetchStories() {
         content,
         image_url,
         created_at,
-        author 
+        users(name)
       `)
       .order('id', { ascending: false });
+    if(sbError) throw sbError;
 
-    if (error) throw error;
+    // Backend stories
+    const res = await fetch(`${BACKEND_URL}/stories`);
+    const backendStories = await res.json();
 
-    displayStories(data);
-  } catch (err) {
-    console.error('⚠️ Error fetching stories:', err.message);
-    storiesContainer.innerHTML = `<p style="color:red;">Failed to load stories.</p>`;
-  }
-}
+    // Combine
+    const allStories = [...sbStories, ...backendStories];
 
-// ✅ Display Supabase stories
-function displayStories(stories) {
-  storiesContainer.innerHTML = '';
+    // Display
+    storiesContainer.innerHTML = '';
+    if(allStories.length === 0){
+      storiesContainer.innerHTML = '<p>No stories found.</p>';
+      return;
+    }
 
-  if (!stories || stories.length === 0) {
-    storiesContainer.innerHTML = '<p>No stories found.</p>';
-    return;
-  }
-
-  stories.forEach(story => {
-    const card = document.createElement('div');
-    card.className = 'story-card';
-    card.innerHTML = `
-      <div class="story-img-box">
-        <img src="${story.image_url || 'images/default.jpg'}" alt="${story.title}" class="story-img"/>
-      </div>
-      <div class="story-content-box">
-        <h2 class="story-title">${story.title}</h2>
-        <p class="story-author">👤 By: ${story.users?.name || 'Unknown Author'}</p>
-        <p class="story-date">🕓 ${new Date(story.created_at).toLocaleDateString()}</p>
-        <p class="story-intro">${story.short_intro || ''}</p>
-        <p class="story-full">${story.content}</p>
-      </div>
-    `;
-    storiesContainer.appendChild(card);
-  });
-}
-
-// ==========================
-// ✅ Fetch posts from backend
-// ==========================
-async function fetchPosts() {
-  try {
-    const res = await fetch(`${BACKEND_URL}/posts`);
-    const data = await res.json();
-
-    postsContainer.innerHTML = '';
-
-    data.posts.forEach(post => {
-      const div = document.createElement('div');
-      div.className = 'post-card';
-      div.innerHTML = `
-        <h3>${post.title}</h3>
-        <p>${post.content}</p>
-        <p>Author: ${post.author}</p>
+    allStories.forEach(story => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${story.image_url || 'images/default.jpg'}">
+        <div class="content">
+          <h3 class="title">${story.title}</h3>
+          <p class="intro">${story.short_intro || ''}</p>
+          <div class="meta">
+            <span>👤 ${story.users?.name || story.author || 'Unknown'}</span>
+            <span>🕓 ${new Date(story.created_at).toLocaleDateString()}</span>
+          </div>
+        </div>
       `;
-      postsContainer.appendChild(div);
+      storiesContainer.appendChild(card);
     });
-
-  } catch (err) {
-    console.error('⚠️ Error fetching posts:', err);
-    postsContainer.innerHTML = `<p style="color:red;">Failed to load posts.</p>`;
+  } catch(err){
+    console.error('Error fetching stories:', err);
+    storiesContainer.innerHTML = '<p style="color:red;">Failed to load stories.</p>';
   }
 }
 
-// ==========================
-// ✅ Add story to backend
-// ==========================
-async function addStoryToBackend(story) {
+fetchStories();
+
+// ----------- FETCH ARTICLES -----------
+const articlesContainer = document.getElementById('articles-container');
+
+async function fetchArticles() {
   try {
-    const res = await fetch(`${BACKEND_URL}/stories`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(story)
+    const { data, error } = await supabase.from('articles').select('*').order('id',{ascending:false});
+    if(error) throw error;
+    articlesContainer.innerHTML='';
+    if(!data || data.length===0){
+      articlesContainer.innerHTML='<p>No articles found.</p>';
+      return;
+    }
+    data.forEach(article=>{
+      const card=document.createElement('div');
+      card.className='card';
+      card.innerHTML=`
+        <img src="${article.image_url||'images/default.jpg'}">
+        <div class="content">
+          <h3 class="title">${article.title}</h3>
+          <p class="intro">${article.short_intro||''}</p>
+        </div>
+      `;
+      articlesContainer.appendChild(card);
     });
-
-    const data = await res.json();
-    console.log('New story added:', data);
-    alert('Story added successfully!');
-    
-    fetchPosts(); // Refresh posts list
-  } catch (err) {
-    console.error('⚠️ Error adding story:', err);
-    alert('Failed to add story.');
+  } catch(err){
+    console.error('Error fetching articles:', err);
+    articlesContainer.innerHTML='<p style="color:red;">Failed to load articles.</p>';
   }
 }
 
-// ==========================
-// ✅ Footer year update
-// ==========================
-document.addEventListener('DOMContentLoaded', () => {
-  const yearSpan = document.getElementById('year');
-  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+fetchArticles();
 
-  fetchStories();
-  fetchPosts();
-});
+// ----------- FETCH VIDEOS -----------
+const videosContainer = document.getElementById('videos-container');
+
+async function fetchVideos() {
+  try {
+    const { data, error } = await supabase.from('videos').select('*').order('id',{ascending:false});
+    if(error) throw error;
+    videosContainer.innerHTML='';
+    if(!data || data.length===0){
+      videosContainer.innerHTML='<p>No videos found.</p>';
+      return;
+    }
+    data.forEach(video=>{
+      const card=document.createElement('div');
+      card.className='card';
+      card.innerHTML=`
+        <img src="${video.thumbnail_url||'images/default.jpg'}">
+        <div class="content">
+          <h3 class="title">${video.title}</h3>
+        </div>
+      `;
+      videosContainer.appendChild(card);
+    });
+  } catch(err){
+    console.error('Error fetching videos:', err);
+    videosContainer.innerHTML='<p style="color:red;">Failed to load videos.</p>';
+  }
+}
+
+fetchVideos();

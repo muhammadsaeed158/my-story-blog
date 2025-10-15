@@ -26,12 +26,11 @@
 <header>
   <h1>All Stories</h1>
   <nav>
-    <a href="home.html">Home</a>
+    <a href="index.html">Home</a>
     <a href="stories.html" class="active">Stories</a>
-    <a href="article.html">Articles</a>
+    <a href="articles.html">Articles</a>
     <a href="videos.html">Videos</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
+    <a href="dashboard.html">Dashboard</a>
     <a href="auth/login.html">Login</a>
   </nav>
 </header>
@@ -46,7 +45,6 @@
 
 <script type="module">
 import { supabase } from './supabase.js';
-
 const container = document.getElementById('stories-container');
 const yearSpan = document.getElementById('year');
 if(yearSpan) yearSpan.textContent = new Date().getFullYear();

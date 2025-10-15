@@ -1,103 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stories - My Blog</title>
-<link rel="stylesheet" href="style.css">
-<style>
-  .story-card {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 15px;
-    margin: 20px 0;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    background-color: #fff;
-    transition: transform 0.2s;
-  }
-  .story-card:hover { transform: scale(1.02); }
-  .story-img { width: 100%; border-radius: 12px; }
-  .story-title { margin: 10px 0 5px; color: #222; font-size: 1.5rem; }
-  .story-author, .story-date { font-size: 0.9rem; color: #555; }
-  .story-intro { font-style: italic; margin-top: 8px; color: #333; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stories - My Blog</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    header {
+      background: #007bff;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: 600;
+    }
+    nav a.active {
+      color: #ffd700;
+    }
+    nav button {
+      background: #ffc107;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #222;
+    }
+    .story-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 20px 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background-color: #fff;
+      transition: transform 0.2s;
+    }
+    .story-card:hover {
+      transform: scale(1.02);
+    }
+    .story-img {
+      width: 100%;
+      border-radius: 12px;
+      height: auto;
+      object-fit: cover;
+    }
+    .story-title {
+      margin: 10px 0 5px;
+      color: #222;
+      font-size: 1.5rem;
+    }
+    .story-author, .story-date {
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .story-intro {
+      font-style: italic;
+      margin-top: 8px;
+      color: #333;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #222;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
-<header>
-  <h1>All Stories</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="stories.html" class="active">Stories</a>
-    <a href="articles.html">Articles</a>
-    <a href="videos.html">Videos</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="auth/login.html">Login</a>
-  </nav>
-</header>
+  <header>
+    <h1>All Stories</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stories.html" class="active">Stories</a>
+      <a href="articles.html">Articles</a>
+      <a href="videos.html">Videos</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="auth/login.html">Login</a>
+    </nav>
+  </header>
 
-<main>
-  <div id="stories-container"><p>Loading stories...</p></div>
-</main>
+  <main>
+    <div id="stories-container"><p>Loading stories...</p></div>
+  </main>
 
-<footer>
-  <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
-</footer>
+  <footer>
+    <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
+  </footer>
 
-<script type="module">
-import { supabase } from './supabase.js';
-const container = document.getElementById('stories-container');
-const yearSpan = document.getElementById('year');
-if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+  <script type="module">
+    import { supabase } from './supabase.js';
 
-// Auth check
-(async () => {
-  const { data: { user } } = await supabase.auth.getUser();
-  if(!user) window.location.href = 'login.html';
-})();
+    const container = document.getElementById('stories-container');
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-// Logout button
-const nav = document.querySelector('nav');
-const logoutBtn = document.createElement('button');
-logoutBtn.textContent = 'Logout';
-logoutBtn.style.marginLeft = '10px';
-logoutBtn.addEventListener('click', async () => {
-  await supabase.auth.signOut();
-  window.location.href = 'login.html';
-});
-nav.appendChild(logoutBtn);
+    // ✅ Auth check
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) window.location.href = 'login.html';
+    })();
 
-// Fetch stories
-async function fetchStories() {
-  try {
-    const { data, error } = await supabase.from('stories').select('*').order('id', { ascending: false });
-    if(error) throw error;
+    // ✅ Add Logout button
+    const nav = document.querySelector('nav');
+    const logoutBtn = document.createElement('button');
+    logoutBtn.textContent = 'Logout';
+    logoutBtn.addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      window.location.href = 'login.html';
+    });
+    nav.appendChild(logoutBtn);
 
-    container.innerHTML = '';
-    if(!data || data.length === 0) {
-      container.innerHTML = '<p>No stories found.</p>';
-      return;
+    // ✅ Fetch stories (Supabase + Deno backend)
+    async function fetchStories() {
+      try {
+        // Supabase stories
+        const { data: sbStories, error: sbError } = await supabase
+          .from('stories')
+          .select('*')
+          .order('id', { ascending: false });
+        if (sbError) throw sbError;
+
+        // Deno backend stories
+        const res = await fetch('https://my-blog-api.deno.dev/stories');
+        const backendData = await res.json();
+        const backendStories = backendData.stories || [];
+
+        // Merge both
+        const allStories = [...sbStories, ...backendStories];
+
+        container.innerHTML = '';
+        if (!allStories.length) {
+          container.innerHTML = '<p>No stories found.</p>';
+          return;
+        }
+
+        // Render stories
+        allStories.forEach(story => {
+          const card = document.createElement('div');
+          card.className = 'story-card';
+          card.innerHTML = `
+            <img src="${story.image_url || 'images/default.jpg'}" class="story-img" alt="${story.title}" />
+            <h2 class="story-title">${story.title}</h2>
+            <p class="story-author">👤 ${story.author || 'Unknown'}</p>
+            <p class="story-date">🕓 ${new Date(story.created_at).toLocaleDateString()}</p>
+            <p class="story-intro">${story.short_intro || ''}</p>
+          `;
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error('Error fetching stories:', err);
+        container.innerHTML = `<p style="color:red;">Failed to load stories.</p>`;
+      }
     }
 
-    data.forEach(story => {
-      const card = document.createElement('div');
-      card.className = 'story-card';
-      card.innerHTML = `
-        <img src="${story.image_url || 'images/default.jpg'}" class="story-img"/>
-        <h2 class="story-title">${story.title}</h2>
-        <p class="story-author">👤 By: ${story.author || 'Unknown Author'}</p>
-        <p class="story-date">🕓 ${new Date(story.created_at).toLocaleDateString()}</p>
-        <p class="story-intro">${story.short_intro || ''}</p>
-        <p class="story-full">${story.content}</p>
-      `;
-      container.appendChild(card);
-    });
-  } catch(err) {
-    console.error('Error fetching stories:', err.message);
-    container.innerHTML = `<p style="color:red;">Failed to load stories.</p>`;
-  }
-}
-
-document.addEventListener('DOMContentLoaded', fetchStories);
-</script>
+    document.addEventListener('DOMContentLoaded', fetchStories);
+  </script>
 </body>
 </html>

@@ -4,144 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Articles - My Blog</title>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      background: #f9fafb;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #222;
-      color: #fff;
-      padding: 20px 0;
-      text-align: center;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-    nav a.active {
-      font-weight: bold;
-      text-decoration: underline;
-    }
-    main {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 20px;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 28px;
-      color: #222;
-    }
+    body { font-family: 'Poppins', sans-serif; margin:0; background:#f9fafb; color:#222; }
+    header { background:#007bff; color:white; padding:1.2rem; text-align:center; }
+    header a { color:white; text-decoration:none; font-weight:600; }
+    .container { max-width:1000px; margin:2rem auto; padding:1rem; }
+    h1 { text-align:center; margin-bottom:2rem; }
     .article-card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-      transition: transform 0.2s;
+      background:white; border-radius:12px; padding:1rem; margin-bottom:1.5rem;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
     }
-    .article-card:hover {
-      transform: translateY(-5px);
-    }
-    .article-card h3 {
-      margin: 0;
-      color: #0077cc;
-    }
-    .article-meta {
-      font-size: 14px;
-      color: #777;
-      margin: 5px 0 15px;
-    }
-    .article-summary {
-      font-size: 16px;
-      color: #444;
-    }
-    .read-more {
-      display: inline-block;
-      margin-top: 10px;
-      background: #0077cc;
-      color: #fff;
-      padding: 8px 14px;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-    .read-more:hover {
-      background: #005fa3;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #222;
-      color: #fff;
-      margin-top: 40px;
-    }
+    .article-card h2 { color:#007bff; }
+    footer { background:#222; color:white; text-align:center; padding:1rem; margin-top:3rem; }
   </style>
 </head>
 <body>
   <header>
-    <h1>Daily Articles</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stories.html">Stories</a>
-      <a href="articles.html" class="active">Articles</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Back to Home</a>
   </header>
 
-  <main>
-    <h2>Latest Articles</h2>
-    <div id="articlesContainer"></div>
-  </main>
+  <div class="container">
+    <h1>📚 Latest Articles</h1>
+    <div id="article-list">Loading articles...</div>
+  </div>
 
-  <footer>
-    <p>© 2025 My Blog - All Rights Reserved</p>
-  </footer>
+  <footer>© <span id="year"></span> My Blog</footer>
 
   <script type="module">
-    // Example: You can connect Supabase here later for dynamic articles
-    const articles = [
-      {
-        title: "How to Stay Motivated Every Day",
-        author: "Kalsoom Saeed",
-        date: "October 13, 2025",
-        summary: "Discover simple habits that can help you stay positive and productive, even on tough days."
-      },
-      {
-        title: "Top 5 Morning Routines for Success",
-        author: "Kalsoom Saeed",
-        date: "October 12, 2025",
-        summary: "Morning routines can change your life. Here are five habits that successful people swear by."
-      },
-      {
-        title: "Why Gratitude is the Secret to Happiness",
-        author: "Kalsoom Saeed",
-        date: "October 11, 2025",
-        summary: "A thankful heart creates a happy mind. Learn how gratitude reshapes your daily perspective."
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'YOUR_SUPABASE_URL';
+    const supabaseKey = 'YOUR_SUPABASE_KEY';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    async function loadArticles() {
+      const { data, error } = await supabase.from('articles').select('*').order('created_at', { ascending: false });
+      const container = document.getElementById('article-list');
+      if (error) {
+        container.innerHTML = `<p>Error loading articles: ${error.message}</p>`;
+        return;
       }
-    ];
+      if (data.length === 0) {
+        container.innerHTML = '<p>No articles yet.</p>';
+        return;
+      }
+      container.innerHTML = data.map(article => `
+        <div class="article-card">
+          <h2>${article.title}</h2>
+          <p>${article.content}</p>
+        </div>
+      `).join('');
+    }
 
-    const container = document.getElementById("articlesContainer");
-
-    articles.forEach(article => {
-      const div = document.createElement("div");
-      div.className = "article-card";
-      div.innerHTML = `
-        <h3>${article.title}</h3>
-        <p class="article-meta">By ${article.author} | ${article.date}</p>
-        <p class="article-summary">${article.summary}</p>
-        <a href="#" class="read-more">Read More</a>
-      `;
-      container.appendChild(div);
-    });
+    document.getElementById("year").textContent = new Date().getFullYear();
+    loadArticles();
   </script>
 </body>
 </html>

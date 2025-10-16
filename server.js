@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 // ✅ server.js — Supabase + Deno Deploy backend
 // Backend Live URL: https://myblog-backend-4xr8vcky4ba7.muhammadsaeed158.deno.net/
+=======
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+const mongoose = require("mongoose");
+const Post = require("./models/Post"); // ✅ Post model import
+>>>>>>> c8cf8bc (Updated backend files and added new models)
 
 import express from "npm:express";
 import cors from "npm:cors";
@@ -10,6 +18,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+<<<<<<< HEAD
 // 🔗 Supabase connection setup
 const supabaseUrl = "https://ynvhluadxmsjoihdjmky.supabase.co";
 const supabaseKey =
@@ -91,3 +100,47 @@ const PORT = 8000;
 app.listen(PORT, () => {
   console.log(`✅ Supabase Backend running at http://localhost:${PORT}`);
 });
+=======
+// ✅ MongoDB Connection
+const uri = "mongodb+srv://Kalsoomsaeed:nTMWog8aFO9Pq0kn@myblog-cluster.th9zk49.mongodb.net/myblog?retryWrites=true&w=majority&appName=myblog-cluster";
+
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("✅ MongoDB connected successfully!"))
+.catch(err => console.error("❌ MongoDB connection error:", err));
+
+
+// 📌 Add New Post
+app.post("/posts", async (req, res) => {
+  try {
+    const newPost = new Post(req.body); // {title, content, author}
+    const savedPost = await newPost.save();
+    res.status(201).json(savedPost);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// 📌 Get All Posts
+app.get("/posts", async (req, res) => {
+  try {
+    const posts = await Post.find();
+    res.json(posts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 📌 Home Route
+app.get("/", (req, res) => {
+  res.send("🚀 Blog API is running...");
+});
+
+// ✅ Start Server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+});
+>>>>>>> c8cf8bc (Updated backend files and added new models)

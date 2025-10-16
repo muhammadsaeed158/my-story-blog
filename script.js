@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { supabase } from './supabase.js'; // Make sure supabase.js is in the same folder
 
 const BACKEND_URL = 'https://my-blog-api.deno.dev';
@@ -165,3 +166,99 @@ fetchAndRenderContent('videos', 'videos-container', 'video');
     })
     .subscribe();
 });
+=======
+alert("JavaScript Connected!");
+document.addEventListener("DOMContentLoaded", function () {
+  const btn = document.getElementById("read-more-btn");
+  const moreText = document.getElementById("more-text");
+  const shortText = document.getElementById("short-text");
+
+  btn.addEventListener("click", function () {
+    if (moreText.style.display === "none") {
+      moreText.style.display = "block";
+      btn.innerText = "Read Less";
+    } else {
+      moreText.style.display = "none";
+      btn.innerText = "Read More";
+    }
+  });
+});
+<script src="script.js"></script>
+</body>
+</html>
+// Footer me current year automatic dalna
+document.addEventListener("DOMContentLoaded", function () {
+  const yearSpan = document.getElementById("year");
+  const currentYear = new Date().getFullYear();
+  yearSpan.textContent = currentYear;
+});
+// Supabase client setup
+const { createClient } = supabase;
+
+// Replace with your Supabase project details
+const SUPABASE_URL = "https://YOUR_PROJECT_ID.supabase.co";
+const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY";
+
+const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Load stories function
+async function loadStories() {
+  let { data, error } = await db.from("stories").select("*");
+  
+  if (error) {
+    console.error("Error loading stories:", error);
+    return;
+  }
+
+  const storyContainer = document.getElementById("stories");
+
+  if (data.length === 0) {
+    storyContainer.innerHTML = "<p>No stories found.</p>";
+    return;
+  }
+
+  storyContainer.innerHTML = data.map(story => `
+    <div class="story">
+      <h3>${story.title}</h3>
+      <p>${story.content}</p>
+    </div>
+  `).join("");
+}
+
+// Call on page load
+document.addEventListener("DOMContentLoaded", loadStories);
+// Supabase client import (via CDN)
+const { createClient } = supabase;
+
+// Your Supabase credentials
+const SUPABASE_URL = "https://pglsznvthegivgatupkk.supabase.co";
+const SUPABASE_KEY = "YOUR_ANON_PUBLIC_KEY"; // copy from API settings
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Function to load stories
+async function loadStories() {
+  const { data, error } = await supabase.from("stories").select("*");
+
+  if (error) {
+    console.error("Error fetching stories:", error);
+    return;
+  }
+
+  const container = document.getElementById("stories");
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p>No stories found.</p>";
+    return;
+  }
+
+  container.innerHTML = data.map(story => `
+    <div class="story">
+      <h3>${story.title}</h3>
+      <p>${story.content}</p>
+    </div>
+  `).join("");
+}
+
+// Load stories when page loads
+document.addEventListener("DOMContentLoaded", loadStories);
+>>>>>>> c8cf8bc (Updated backend files and added new models)

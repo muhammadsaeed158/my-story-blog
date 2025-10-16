@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
   <title>My Blog - Home</title>
 
   <!-- Fonts + Icons -->
@@ -231,3 +232,162 @@
 
 </body>
 </html>
+=======
+  <title>My Blog</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to My Blog</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Stories</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <h2>My First Blog Post</h2>
+      <p>This is the starting point of my professional blog website.</p>
+    </article>
+  </main>
+
+  <footer>
+    <p>© 2025 My Blog - All Rights Reserved</p>
+  </footer>
+</body>
+</html>
+<article>
+  <h2>Second Blog Post</h2>
+  <p>Here is another sample post to show multiple stories.</p>
+</article>
+<link rel="stylesheet" href="style.css">
+<a href="index.html">Home</a>
+<a href="stories.html">Stories</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<form id="contactForm">
+  <input type="text" id="name" placeholder="Your Name">
+  <input type="email" id="email" placeholder="Your Email">
+  <textarea id="message" placeholder="Your Message"></textarea>
+  <button type="submit">Send</button>
+</form>
+<body>
+<a href="index.html" class="active">Home</a>
+<script src="script.js"></script>
+</body>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Blog</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      padding: 20px;
+    }
+    .post {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .read-more-btn {
+      background: #007BFF;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .read-more-btn:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="post">
+    <p class="short-text">
+      This is a short intro of the first post...
+    </p>
+    <p class="more-text" style="display: none;">
+      This is the full content of the first post. You can write complete details here. 
+      Add more text, images, or links if you want.
+    </p>
+    <button class="read-more-btn">Read More</button>
+  </div>
+
+  <div class="post">
+    <p class="short-text">
+      This is a short intro of the second post...
+    </p>
+    <p class="more-text" style="display: none;">
+      This is the full content of the second post. Here is another story with more details.
+    </p>
+    <button class="read-more-btn">Read More</button>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const buttons = document.querySelectorAll(".read-more-btn");
+      buttons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const post = btn.closest(".post");
+          const moreText = post.querySelector(".more-text");
+          if (moreText.style.display === "none" || moreText.style.display === "") {
+            moreText.style.display = "block";
+            btn.innerText = "Read Less";
+          } else {
+            moreText.style.display = "none";
+            btn.innerText = "Read More";
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+<script src="script.js"></script>
+<div class="post">
+  <p class="short-text">
+    This is a short intro of Post 1. It will be cut after 3 lines with dots...
+  </p>
+
+  <p class="more-text">
+    👋 This is the full content of Post 1. Yahan aap apni puri story likh sakte ho. 
+    Jab "Read More" dabayenge to yeh visible hoga aur dots wali text hide ho jayegi.
+  </p>
+
+  <button class="read-more-btn">Read More</button>
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Blog</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>My Blog Stories</h1>
+
+  <!-- Stories container -->
+  <div id="stories"></div>
+
+  <!-- Supabase client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Custom script -->
+  <script src="script.js"></script>
+</body>
+</html>
+<div id="stories"></div>
+>>>>>>> c8cf8bc (Updated backend files and added new models)

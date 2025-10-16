@@ -1,5 +1,27 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "@vercel/speed-insights": "^1.2.0"
   }
+=======
+    "@supabase/supabase-js": "^2.27.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "mongoose": "^7.8.7"
+  },
+  "description": "A story publishing blog where users can write, share, and explore articles. Built with Node.js, Express, and MySQL.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhammadsaeed158/my-story-blog.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/muhammadsaeed158/my-story-blog/issues"
+  },
+  "homepage": "https://github.com/muhammadsaeed158/my-story-blog#readme"
+>>>>>>> c8cf8bc (Updated backend files and added new models)
 }

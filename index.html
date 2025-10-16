@@ -10,65 +10,165 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-    body{background:#f9fafb;color:#222;}
-    header{
-      background:#007bff;color:#fff;padding:1.2rem;text-align:center;
-      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
-    header h1{font-size:1.9rem;font-weight:700;}
-    header h1 i{margin-right:8px;}
-    nav ul{
-      display:flex;justify-content:center;flex-wrap:wrap;
-      list-style:none;margin-top:8px;
-    }
-    nav ul li{margin:6px 10px;}
-    nav ul li a{
-      color:#fff;text-decoration:none;font-weight:600;transition:.3s;
-    }
-    nav ul li a:hover{color:#ffd700;}
-    
-    .hero{
-      text-align:center;padding:3rem 1rem;background:#e9f3ff;
-    }
-    .hero h2{font-size:2rem;margin-bottom:.5rem;}
-    .hero p{color:#555;}
-    .hero button{
-      margin-top:1rem;background:#007bff;color:#fff;
-      padding:10px 22px;border:none;border-radius:8px;
-      font-weight:600;cursor:pointer;transition:.3s;
-    }
-    .hero button:hover{background:#0056b3;}
 
-    .featured{
-      max-width:1200px;margin:3rem auto;padding:0 1rem;
+    body {
+      background: #f9fafb;
+      color: #222;
     }
-    .featured h2{text-align:center;font-size:1.8rem;margin-bottom:2rem;color:#333;}
-    .card-grid{
-      display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-      gap:1.5rem;
-    }
-    .card{
-      background:#fff;border-radius:15px;overflow:hidden;
-      box-shadow:0 4px 15px rgba(0,0,0,0.1);transition:.3s;
-    }
-    .card:hover{transform:translateY(-6px);}
-    .card img{width:100%;height:180px;object-fit:cover;}
-    .card video{width:100%;height:180px;object-fit:cover;}
-    .card .content{padding:1rem;}
-    .card h3{margin-bottom:.3rem;color:#007bff;}
-    .card p{color:#555;font-size:.9rem;}
 
-    footer{background:#222;color:#fff;text-align:center;padding:2rem 1rem;margin-top:3rem;}
-    .social-icons a{
-      margin:0 .4rem;font-size:1.4rem;transition:.3s;
+    header {
+      background: #007bff;
+      color: #fff;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .social-icons a.youtube{color:#FF0000;}
-    .social-icons a.tiktok{color:#69C9D0;}
-    .social-icons a.facebook{color:#1877F2;}
-    .social-icons a.twitter{color:#1DA1F2;}
-    .social-icons a.instagram{color:#C13584;}
-    .social-icons a:hover{opacity:.8;}
+
+    header h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+    }
+
+    header h1 i {
+      margin-right: 8px;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    nav ul li {
+      margin: 6px 10px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ffd700;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: #e9f3ff;
+    }
+
+    .hero h2 {
+      font-size: 2rem;
+      margin-bottom: .5rem;
+    }
+
+    .hero p {
+      color: #555;
+    }
+
+    .hero button {
+      margin-top: 1rem;
+      background: #007bff;
+      color: #fff;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .hero button:hover {
+      background: #0056b3;
+    }
+
+    .featured {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+
+    .featured h2 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+    }
+
+    .card img,
+    .card video {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card .content {
+      padding: 1rem;
+    }
+
+    .card h3 {
+      margin-bottom: .3rem;
+      color: #007bff;
+    }
+
+    .card p {
+      color: #555;
+      font-size: .9rem;
+    }
+
+    footer {
+      background: #222;
+      color: #fff;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+    }
+
+    .social-icons a {
+      margin: 0 .4rem;
+      font-size: 1.4rem;
+      transition: .3s;
+    }
+
+    .social-icons a.youtube { color: #FF0000; }
+    .social-icons a.tiktok { color: #69C9D0; }
+    .social-icons a.facebook { color: #1877F2; }
+    .social-icons a.twitter { color: #1DA1F2; }
+    .social-icons a.instagram { color: #C13584; }
+
+    .social-icons a:hover {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
   </style>
 </head>
 
@@ -79,7 +179,7 @@
     <h1><i class="fa-solid fa-earth-asia"></i> My Blog</h1>
     <nav>
       <ul id="nav-links">
-        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html" class="active">Home</a></li>
         <li><a href="stories.html">Stories</a></li>
         <li><a href="articles.html">Articles</a></li>
         <li><a href="videos.html">Videos</a></li>
@@ -110,19 +210,19 @@
   <footer>
     <p>© <span id="year"></span> My Blog — All Rights Reserved</p>
     <div class="social-icons">
-      <a href="https://www.youtube.com/@MakeHome-k4e" class="youtube" target="_blank"><i class="fab fa-youtube"></i></a>
-      <a href="https://tiktok.com/@halal.laugh.uk.funny786" class="tiktok" target="_blank"><i class="fab fa-tiktok"></i></a>
-      <a href="https://www.facebook.com/profile.php?id=61579375657137&mibextid=ZbWKwL" class="facebook" target="_blank"><i class="fab fa-facebook"></i></a>
-      <a href="#" class="twitter" target="_blank"><i class="fab fa-twitter"></i></a>
-      <a href="#" class="instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.youtube.com/@MakeHome-k4e" class="youtube" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://tiktok.com/@halal.laugh.uk.funny786" class="tiktok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=61579375657137&mibextid=ZbWKwL" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+      <a href="#" class="twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+      <a href="#" class="instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
     </div>
   </footer>
 
   <!-- ---------------- SCRIPT ---------------- -->
   <script type="module" src="script.js"></script>
   <script>
-    // Dynamic footer year fallback
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
+
 </body>
 </html>

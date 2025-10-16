@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Blog - Home</title>
+
+  <!-- Fonts + Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
   <style>
-    /* ---------------- Global ---------------- */
     * {
       margin: 0;
       padding: 0;
@@ -20,7 +22,6 @@
       color: #222;
     }
 
-    /* ---------------- Header ---------------- */
     header {
       background: #007bff;
       color: #fff;
@@ -57,12 +58,10 @@
       transition: 0.3s;
     }
 
-    nav ul li a:hover,
-    nav ul li a.active {
+    nav ul li a:hover {
       color: #ffd700;
     }
 
-    /* ---------------- Hero ---------------- */
     .hero {
       text-align: center;
       padding: 3rem 1rem;
@@ -94,7 +93,6 @@
       background: #0056b3;
     }
 
-    /* ---------------- Featured Cards ---------------- */
     .featured {
       max-width: 1200px;
       margin: 3rem auto;
@@ -147,22 +145,6 @@
       font-size: .9rem;
     }
 
-    .card button {
-      margin-top: 0.5rem;
-      background: #007bff;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .card button:hover {
-      background: #0056b3;
-    }
-
-    /* ---------------- Footer ---------------- */
     footer {
       background: #222;
       color: #fff;
@@ -180,7 +162,7 @@
     .social-icons a.youtube { color: #FF0000; }
     .social-icons a.tiktok { color: #69C9D0; }
     .social-icons a.facebook { color: #1877F2; }
-    .social-icons a.twitter { color: #1DA1F2; }
+    .social-icons a.twitter { color: #1DA1F2; } /* X / Twitter */
     .social-icons a.instagram { 
       background: radial-gradient(circle at 30% 107%, #fdf497 0%, 
       #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
@@ -192,9 +174,9 @@
       transform: scale(1.2);
       opacity: 0.85;
     }
-
   </style>
 </head>
+
 <body>
 
   <!-- ---------------- HEADER ---------------- -->
@@ -225,7 +207,7 @@
   <section class="featured">
     <h2>🌟 Featured Content</h2>
     <div class="card-grid" id="featured-grid">
-      <!-- Dynamic cards inserted by JS -->
+      <!-- Dynamic cards will be inserted here by script.js -->
     </div>
   </section>
 
@@ -235,38 +217,16 @@
     <div class="social-icons">
       <a href="https://www.youtube.com/@MakeHome-k4e" class="youtube" target="_blank"><i class="fa-brands fa-youtube"></i></a>
       <a href="https://tiktok.com/@halal.laugh.uk.funny786" class="tiktok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://www.facebook.com/profile.php?id=61579375657137" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://www.facebook.com/profile.php?id=61579375657137&mibextid=ZbWKwL" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
       <a href="https://twitter.com" class="twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
       <a href="https://instagram.com" class="instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
     </div>
   </footer>
 
   <!-- ---------------- SCRIPT ---------------- -->
+  <script type="module" src="script.js"></script>
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
-
-    // Sample featured content
-    const featuredData = [
-      { title: "Story 1", type: "story", description: "Read amazing story 1", img: "https://via.placeholder.com/300x180" },
-      { title: "Article 1", type: "article", description: "Interesting article", img: "https://via.placeholder.com/300x180" },
-      { title: "Video 1", type: "video", description: "Watch video 1", img: "https://via.placeholder.com/300x180" }
-    ];
-
-    // Load featured cards
-    const grid = document.getElementById("featured-grid");
-    featuredData.forEach(item => {
-      const card = document.createElement("div");
-      card.classList.add("card");
-      card.innerHTML = `
-        <img src="${item.img}" alt="${item.title}">
-        <div class="content">
-          <h3>${item.title}</h3>
-          <p>${item.description}</p>
-          <button onclick="alert('Open ${item.type} page')">View</button>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
   </script>
 
 </body>

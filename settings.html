@@ -17,21 +17,15 @@ body { background:#f8f9fa; color:#333; }
 
 /* Navbar */
 header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:1rem 2rem;
-  background:#007bff;
-  color:#fff;
-  position: sticky;
-  top:0;
-  z-index:1000;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background:#007bff; color:#fff; padding:1rem 2rem;
+  position:sticky; top:0; z-index:1000; box-shadow:0 4px 8px rgba(0,0,0,0.1);
 }
 header .logo h1 { font-size:1.8rem; font-weight:700; cursor:pointer; }
-nav ul.nav-links { list-style:none; display:flex; align-items:center; }
-nav ul.nav-links li { margin-left:20px; }
-nav ul.nav-links li a { text-decoration:none; color:#fff; font-weight:600; transition: all 0.3s; }
+nav ul.nav-links { list-style:none; display:flex; flex-wrap:wrap; margin-top:8px; }
+nav ul.nav-links li { margin:5px 15px; }
+nav ul.nav-links li a {
+  text-decoration:none; color:#fff; font-weight:600; transition: all 0.3s;
+}
 nav ul.nav-links li a:hover, nav ul.nav-links li a.active { color:#ffd700; transform:scale(1.05); }
 nav ul.nav-links li button#logoutBtn {
   background:#ffc107; color:#222; border:none; padding:6px 14px; border-radius:6px; cursor:pointer; font-weight:600; transition: all 0.3s;
@@ -60,8 +54,8 @@ footer .social-icons a:hover { color:#ffd700; }
 
 /* Responsive */
 @media(max-width:900px){
-  nav ul.nav-links { flex-direction: column; align-items:flex-start; }
-  nav ul.nav-links li { margin:10px 0; }
+  nav ul.nav-links { flex-direction:row; flex-wrap:wrap; justify-content:center; }
+  nav ul.nav-links li { margin:8px 10px; }
 }
 </style>
 </head>
@@ -72,14 +66,14 @@ footer .social-icons a:hover { color:#ffd700; }
   <div class="logo"><h1 onclick="window.location.href='index.html'">My Blog</h1></div>
   <nav>
     <ul class="nav-links">
-      <li><a href="home.html">Home</a></li>
+      <li><a href="index.html">Home</a></li>
       <li><a href="stories.html">Stories</a></li>
       <li><a href="articles.html">Articles</a></li>
       <li><a href="videos.html">Videos</a></li>
       <li><a href="dashboard.html">Dashboard</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
-      <li><a href="settings.html" class="active"><i class="fas fa-cog"></i></a></li>
+      <li><a href="settings.html" class="active"><i class="fas fa-cog"></i> Settings</a></li>
       <li><button id="logoutBtn">Logout</button></li>
     </ul>
   </nav>

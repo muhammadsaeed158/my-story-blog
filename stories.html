@@ -1,162 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stories - My Blog</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    header {
-      background: #007bff;
-      color: #fff;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 10px;
-      font-weight: 600;
-    }
-    nav a.active {
-      color: #ffd700;
-    }
-    nav button {
-      background: #ffc107;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      color: #222;
-    }
-    .story-card {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 15px;
-      margin: 20px 0;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      background-color: #fff;
-      transition: transform 0.2s;
-    }
-    .story-card:hover {
-      transform: scale(1.02);
-    }
-    .story-img {
-      width: 100%;
-      border-radius: 12px;
-      height: auto;
-      object-fit: cover;
-    }
-    .story-title {
-      margin: 10px 0 5px;
-      color: #222;
-      font-size: 1.5rem;
-    }
-    .story-author, .story-date {
-      font-size: 0.9rem;
-      color: #555;
-    }
-    .story-intro {
-      font-style: italic;
-      margin-top: 8px;
-      color: #333;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #222;
-      color: #fff;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stories - My Blog</title>
+
+<!-- Google Fonts + FontAwesome -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+/* Reset & Body */
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Poppins', sans-serif;}
+body { background:#f9fafb; color:#222; }
+
+/* Navbar */
+header {
+  background:#007bff; color:#fff; padding:1rem 1.5rem;
+  display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+header h1 { font-size:1.7rem; cursor:pointer; margin-bottom:0.5rem; }
+nav { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+nav a { color:#fff; text-decoration:none; font-weight:600; padding:6px 10px; border-radius:6px; transition:all 0.3s; }
+nav a:hover, nav a.active { background:#ffd700; color:#222; }
+nav button { background:#ffc107; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:600; color:#222; transition:all 0.3s; }
+nav button:hover { background:#e0a800; }
+
+/* Main Section */
+main { max-width:1200px; margin:2rem auto; padding:0 1rem; }
+h2.section-title { font-size:2rem; text-align:center; margin-bottom:2rem; color:#007bff; }
+
+/* Stories Grid */
+#stories-container { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem; }
+.story-card { background:#fff; border-radius:15px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition:transform 0.3s; }
+.story-card:hover { transform:translateY(-5px); }
+.story-card img { width:100%; height:180px; object-fit:cover; }
+.story-content { padding:1rem; }
+.story-content h3 { font-size:1.3rem; margin-bottom:0.3rem; color:#007bff; }
+.story-content p { font-size:0.9rem; color:#555; margin:3px 0; }
+.story-meta { display:flex; justify-content:space-between; font-size:0.85rem; color:#888; margin-top:0.5rem; }
+
+/* Footer */
+footer { background:#222; color:#fff; text-align:center; padding:2rem 1rem; margin-top:3rem; }
+footer .social-icons a { margin:0 0.4rem; font-size:1.4rem; color:#fff; transition:0.3s; }
+footer .social-icons a.youtube{color:#FF0000;}
+footer .social-icons a.facebook{color:#1877F2;}
+footer .social-icons a.twitter{color:#1DA1F2;}
+footer .social-icons a.instagram{color:#C13584;}
+footer .social-icons a:hover{opacity:0.8;}
+
+/* Responsive */
+@media(max-width:768px){ header { flex-direction:column; } nav { justify-content:center; } }
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>All Stories</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stories.html" class="active">Stories</a>
-      <a href="articles.html">Articles</a>
-      <a href="videos.html">Videos</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="auth/login.html">Login</a>
-    </nav>
-  </header>
+<header>
+  <h1 onclick="window.location.href='index.html'"><i class="fa-solid fa-earth-asia"></i> My Blog</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="stories.html" class="active">Stories</a>
+    <a href="articles.html">Articles</a>
+    <a href="videos.html">Videos</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="auth/login.html">Login</a>
+    <button id="logoutBtn">Logout</button>
+  </nav>
+</header>
 
-  <main>
-    <div id="stories-container"><p>Loading stories...</p></div>
-  </main>
+<main>
+  <h2 class="section-title">📖 All Stories</h2>
+  <div id="stories-container">
+    <p>Loading stories...</p>
+  </div>
+</main>
 
-  <footer>
-    <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
-  </footer>
+<footer>
+  <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
+  <div class="social-icons">
+    <a href="#" class="youtube"><i class="fab fa-youtube"></i></a>
+    <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
+    <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+    <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+  </div>
+</footer>
 
-  <script type="module">
-    import { supabase } from './supabase.js';
+<script type="module">
+import { supabase } from './supabase.js';
+document.getElementById('year').textContent = new Date().getFullYear();
 
-    const container = document.getElementById('stories-container');
-    document.getElementById('year').textContent = new Date().getFullYear();
+// Logout
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.href = 'auth/login.html';
+});
 
-    // ✅ Auth check
-    (async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) window.location.href = 'login.html';
-    })();
+// Auth check
+(async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if(!user) window.location.href = 'auth/login.html';
+})();
 
-    // ✅ Add Logout button
-    const nav = document.querySelector('nav');
-    const logoutBtn = document.createElement('button');
-    logoutBtn.textContent = 'Logout';
-    logoutBtn.addEventListener('click', async () => {
-      await supabase.auth.signOut();
-      window.location.href = 'login.html';
-    });
-    nav.appendChild(logoutBtn);
+// Fetch stories from Supabase
+async function fetchStories() {
+  const container = document.getElementById('stories-container');
+  try {
+    const { data: stories, error } = await supabase
+      .from('stories')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if(error) throw error;
 
-    // ✅ Fetch stories (Supabase + Deno backend)
-    async function fetchStories() {
-      try {
-        // Supabase stories
-        const { data: sbStories, error: sbError } = await supabase
-          .from('stories')
-          .select('*')
-          .order('id', { ascending: false });
-        if (sbError) throw sbError;
-
-        // Deno backend stories
-        const res = await fetch('https://my-blog-api.deno.dev/stories');
-        const backendData = await res.json();
-        const backendStories = backendData.stories || [];
-
-        // Merge both
-        const allStories = [...sbStories, ...backendStories];
-
-        container.innerHTML = '';
-        if (!allStories.length) {
-          container.innerHTML = '<p>No stories found.</p>';
-          return;
-        }
-
-        // Render stories
-        allStories.forEach(story => {
-          const card = document.createElement('div');
-          card.className = 'story-card';
-          card.innerHTML = `
-            <img src="${story.image_url || 'images/default.jpg'}" class="story-img" alt="${story.title}" />
-            <h2 class="story-title">${story.title}</h2>
-            <p class="story-author">👤 ${story.author || 'Unknown'}</p>
-            <p class="story-date">🕓 ${new Date(story.created_at).toLocaleDateString()}</p>
-            <p class="story-intro">${story.short_intro || ''}</p>
-          `;
-          container.appendChild(card);
-        });
-      } catch (err) {
-        console.error('Error fetching stories:', err);
-        container.innerHTML = `<p style="color:red;">Failed to load stories.</p>`;
-      }
+    container.innerHTML = '';
+    if(!stories || stories.length === 0){
+      container.innerHTML = '<p>No stories found.</p>';
+      return;
     }
 
-    document.addEventListener('DOMContentLoaded', fetchStories);
-  </script>
+    stories.forEach(story => {
+      const div = document.createElement('div');
+      div.className = 'story-card';
+      div.innerHTML = `
+        <img src="${story.image_url || 'images/default.jpg'}" alt="${story.title}">
+        <div class="story-content">
+          <h3>${story.title}</h3>
+          <p class="story-intro">${story.short_intro || ''}</p>
+          <div class="story-meta">
+            <span>👤 ${story.user_id || 'Anonymous'}</span>
+            <span>🕓 ${story.created_at ? new Date(story.created_at).toLocaleDateString() : ''}</span>
+          </div>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  } catch(err) {
+    console.error(err);
+    container.innerHTML = '<p style="color:red;">Failed to load stories.</p>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', fetchStories);
+</script>
 </body>
 </html>

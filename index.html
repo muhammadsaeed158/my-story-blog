@@ -74,10 +74,11 @@
 
 <body>
 
+  <!-- ---------------- HEADER ---------------- -->
   <header>
     <h1><i class="fa-solid fa-earth-asia"></i> My Blog</h1>
     <nav>
-      <ul>
+      <ul id="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="stories.html">Stories</a></li>
         <li><a href="articles.html">Articles</a></li>
@@ -85,50 +86,27 @@
         <li><a href="website.html">Website Demo</a></li>
         <li><a href="dashboard.html">Dashboard</a></li>
         <li><a href="settings.html">Settings</a></li>
-        <li><a href="login.html">Sign In</a></li>
+        <li id="auth-link"><a href="login.html">Sign In</a></li>
       </ul>
     </nav>
   </header>
 
+  <!-- ---------------- HERO ---------------- -->
   <section class="hero">
     <h2>Welcome to My Blog</h2>
     <p>Share your stories, articles, and videos with the world.</p>
     <button onclick="window.location.href='website.html'">🎥 Watch Website Demo</button>
   </section>
 
+  <!-- ---------------- FEATURED CONTENT ---------------- -->
   <section class="featured">
     <h2>🌟 Featured Content</h2>
-    <div class="card-grid">
-
-      <div class="card">
-        <img src="images/story1.jpg" alt="Story">
-        <div class="content">
-          <h3>Featured Story</h3>
-          <p>Read inspiring stories shared by our users.</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <img src="images/article1.jpg" alt="Article">
-        <div class="content">
-          <h3>Featured Article</h3>
-          <p>Explore trending articles and hot topics.</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <video autoplay muted loop>
-          <source src="images/video1.mp4" type="video/mp4">
-        </video>
-        <div class="content">
-          <h3>Featured Video</h3>
-          <p>Watch creative videos made by our members.</p>
-        </div>
-      </div>
-
+    <div class="card-grid" id="featured-grid">
+      <!-- Dynamic cards will be inserted here by script.js -->
     </div>
   </section>
 
+  <!-- ---------------- FOOTER ---------------- -->
   <footer>
     <p>© <span id="year"></span> My Blog — All Rights Reserved</p>
     <div class="social-icons">
@@ -140,7 +118,10 @@
     </div>
   </footer>
 
+  <!-- ---------------- SCRIPT ---------------- -->
+  <script type="module" src="script.js"></script>
   <script>
+    // Dynamic footer year fallback
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>

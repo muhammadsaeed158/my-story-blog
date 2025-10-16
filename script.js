@@ -1,135 +1,125 @@
-import { supabase } from './supabase.js';
+import { supabase } from './supabase.js'; // Supabase client file
 
 const BACKEND_URL = 'https://my-blog-api.deno.dev';
 
-// Set footer year dynamically
-document.getElementById('year').textContent = new Date().getFullYear();
+// -------------------- FOOTER YEAR --------------------
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// Logout functionality
+// -------------------- LOGOUT --------------------
 const logoutBtn = document.getElementById('logoutBtn');
-logoutBtn.addEventListener('click', async () => {
-  try {
-    await supabase.auth.signOut();
-    window.location.href = 'login.html';
-  } catch (err) {
-    console.error('Logout failed:', err);
-  }
-});
-
-// -------------------- FETCH STORIES --------------------
-const storiesContainer = document.getElementById('stories-container');
-async function fetchStories() {
-  try {
-    // Supabase stories
-    const { data: sbStories, error: sbError } = await supabase
-      .from('stories')
-      .select('*')
-      .order('id', { ascending: false });
-    if (sbError) throw sbError;
-
-    // Backend stories
-    const res = await fetch(`${BACKEND_URL}/stories`);
-    const backendStoriesJson = await res.json();
-    const backendStories = backendStoriesJson.stories || [];
-
-    // Combine both sources
-    const allStories = [...sbStories, ...backendStories];
-
-    // Render
-    storiesContainer.innerHTML = '';
-    if (allStories.length === 0) {
-      storiesContainer.innerHTML = '<p>No stories found.</p>';
-      return;
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', async () => {
+    try {
+      await supabase.auth.signOut();
+      window.location.href = 'login.html';
+    } catch (err) {
+      console.error('Logout failed:', err.message);
+      alert('Logout failed. Please try again.');
     }
-
-    allStories.forEach(story => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <img src="${story.image_url || 'images/default.jpg'}" alt="${story.title}">
-        <div class="content">
-          <h3 class="title">${story.title}</h3>
-          <p class="intro">${story.short_intro || ''}</p>
-          <div class="meta">
-            <span>👤 ${story.users?.name || story.author || 'Unknown'}</span>
-            <span>🕓 ${new Date(story.created_at).toLocaleDateString()}</span>
-          </div>
-        </div>
-      `;
-      storiesContainer.appendChild(card);
-    });
-  } catch (err) {
-    console.error('Error fetching stories:', err);
-    storiesContainer.innerHTML = '<p style="color:red;">Failed to load stories.</p>';
-  }
+  });
 }
-fetchStories();
 
-// -------------------- FETCH ARTICLES --------------------
-const articlesContainer = document.getElementById('articles-container');
-async function fetchArticles() {
-  try {
-    const { data: articles, error } = await supabase
-      .from('articles')
-      .select('*')
-      .order('id', { ascending: false });
-    if (error) throw error;
+// -------------------- CREATE CARD --------------------
+function createCard(item, type) {
+  const card = document.createElement('div');
+  card.className = 'card';
 
-    articlesContainer.innerHTML = '';
-    if (!articles || articles.length === 0) {
-      articlesContainer.innerHTML = '<p>No articles found.</p>';
-      return;
-    }
+  let imgSrc = 'images/default.jpg';
+  let title = '';
+  let intro = '';
+  let media = '';
 
-    articles.forEach(article => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <img src="${article.image_url || 'images/default.jpg'}" alt="${article.title}">
-        <div class="content">
-          <h3 class="title">${article.title}</h3>
-          <p class="intro">${article.short_intro || ''}</p>
-        </div>
-      `;
-      articlesContainer.appendChild(card);
-    });
-  } catch (err) {
-    console.error('Error fetching articles:', err);
-    articlesContainer.innerHTML = '<p style="color:red;">Failed to load articles.</p>';
+  switch(type) {
+    case 'story':
+      imgSrc = item.image_url || imgSrc;
+      title = item.title;
+      intro = item.short_intro || '';
+      media = `<span>👤 ${item.users?.name || item.author || 'Unknown'}</span>
+               <span>🕓 ${new Date(item.created_at).toLocaleDateString()}</span>`;
+      break;
+    case 'article':
+      imgSrc = item.image_url || imgSrc;
+      title = item.title;
+      intro = item.short_intro || '';
+      media = '';
+      break;
+    case 'video':
+      imgSrc = item.thumbnail_url || imgSrc;
+      title = item.title;
+      media = `<video src="${item.video_url}" controls></video>`;
+      intro = '';
+      break;
   }
-}
-fetchArticles();
 
-// -------------------- FETCH VIDEOS --------------------
-const videosContainer = document.getElementById('videos-container');
-async function fetchVideos() {
+  card.innerHTML = `
+    <img src="${imgSrc}" alt="${title}" class="card-img">
+    <div class="content">
+      <h3 class="title">${title}</h3>
+      <p class="intro">${intro}</p>
+      <div class="meta">${media}</div>
+    </div>
+  `;
+  return card;
+}
+
+// -------------------- FETCH & RENDER CONTENT --------------------
+async function fetchAndRenderContent(tableName, containerId, type) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
   try {
-    const { data: videos, error } = await supabase
-      .from('videos')
-      .select('*')
+    const { data, error } = await supabase
+      .from(tableName)
+      .select(`*, users(name)`)
       .order('id', { ascending: false });
     if (error) throw error;
 
-    videosContainer.innerHTML = '';
-    if (!videos || videos.length === 0) {
-      videosContainer.innerHTML = '<p>No videos found.</p>';
+    container.innerHTML = '';
+    if (!data || data.length === 0) {
+      container.innerHTML = `<p>No ${type}s found.</p>`;
       return;
     }
 
-    videos.forEach(video => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <img src="${video.thumbnail_url || 'images/default.jpg'}" alt="${video.title}">
-        <div class="content">
-          <h3 class="title">${video.title}</h3>
-        </div>
-      `;
-      videosContainer.appendChild(card);
+    data.forEach(item => {
+      const card = createCard(item, type);
+      container.appendChild(card);
     });
   } catch (err) {
-    console.error('Error fetching videos:', err);
-    videosContainer.innerHTML = '<p style="color:red;">Failed to load videos.</p>';
+    console.error(`Error fetching ${type}s:`, err.message);
+    container.innerHTML = `<p style="color:red;">Failed to load ${type}s.</p>`;
   }
 }
-fetchVideos();
+
+// -------------------- INITIALIZE CONTENT --------------------
+fetchAndRenderContent('stories', 'stories-container', 'story');
+fetchAndRenderContent('articles', 'articles-container', 'article');
+fetchAndRenderContent('videos', 'videos-container', 'video');
+
+// -------------------- REAL-TIME SUBSCRIPTIONS --------------------
+supabase
+  .from('stories')
+  .on('INSERT', payload => {
+    const container = document.getElementById('stories-container');
+    const card = createCard(payload.new, 'story');
+    container.prepend(card);
+  })
+  .subscribe();
+
+supabase
+  .from('articles')
+  .on('INSERT', payload => {
+    const container = document.getElementById('articles-container');
+    const card = createCard(payload.new, 'article');
+    container.prepend(card);
+  })
+  .subscribe();
+
+supabase
+  .from('videos')
+  .on('INSERT', payload => {
+    const container = document.getElementById('videos-container');
+    const card = createCard(payload.new, 'video');
+    container.prepend(card);
+  })
+  .subscribe();

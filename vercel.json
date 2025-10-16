@@ -1,0 +1,11 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/videos", "destination": "/videos.html" },
+    { "source": "/articles", "destination": "/articles.html" },
+    { "source": "/stories", "destination": "/stories.html" },
+    { "source": "/dashboard", "destination": "/dashboard.html" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}

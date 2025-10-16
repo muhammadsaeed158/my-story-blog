@@ -4,92 +4,65 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Videos - My Blog</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    body { font-family:'Poppins',sans-serif; background:#f8f9fa; margin:0; }
-    header { background:#fff; padding:1rem; box-shadow:0 2px 6px rgba(0,0,0,0.1);}
-    header h1 { margin:0; font-size:1.8rem; color:#222; text-align:center;}
-    nav { display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:0.5rem;}
-    nav a { text-decoration:none; color:#555; font-weight:600; position:relative; }
-    nav a::after { content:''; position:absolute; width:0; height:2px; left:0; bottom:-2px; background:#007bff; transition: width 0.3s; }
-    nav a:hover::after { width:100%; }
-    nav a:hover { color:#007bff; }
-    main { max-width:1200px; margin:2rem auto; padding:0 1rem; }
-    h2 { text-align:center; margin-bottom:2rem; color:#222; }
-    .video-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem; }
-    .video-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition:transform 0.3s; }
-    .video-card:hover { transform:translateY(-5px); }
-    iframe { width:100%; height:220px; border:0; display:block; }
-    .video-content { padding:1rem; }
-    .video-title { font-weight:700; font-size:1.1rem; margin-bottom:0.4rem; color:#111;}
-    .video-desc { font-size:0.9rem; color:#555; }
-    footer { background:#222; color:#fff; text-align:center; padding:2rem 1rem; margin-top:3rem; }
+    body { font-family: 'Poppins', sans-serif; margin:0; background:#f9fafb; color:#222; }
+    header { background:#007bff; color:white; padding:1.2rem; text-align:center; }
+    header a { color:white; text-decoration:none; font-weight:600; }
+    .container { max-width:1000px; margin:2rem auto; padding:1rem; }
+    h1 { text-align:center; margin-bottom:2rem; }
+    .video-card {
+      background:white; border-radius:12px; padding:1rem; margin-bottom:1.5rem;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+    .video-card video {
+      width:100%; border-radius:10px; margin-bottom:.8rem;
+    }
+    footer { background:#222; color:white; text-align:center; padding:1rem; margin-top:3rem; }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>My Blog - Videos</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="stories.html">Stories</a>
-      <a href="articles.html">Articles</a>
-      <a href="videos.html" class="active">Videos</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+    <a href="index.html"><i class="fa-solid fa-house"></i> Back to Home</a>
   </header>
 
-  <main>
-    <h2>Latest Videos</h2>
-    <div class="video-grid" id="videos-container"></div>
-  </main>
+  <div class="container">
+    <h1>🎬 Latest Videos</h1>
+    <div id="video-list">Loading videos...</div>
+  </div>
 
-  <footer>
-    <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
-  </footer>
+  <footer>© <span id="year"></span> My Blog</footer>
 
-  <script>
-    // Year auto-update
-    document.getElementById('year').textContent = new Date().getFullYear();
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    // ✅ Fully working YouTube public videos (tested)
-    const videos = [
-      {
-        title: "Nature Relaxation in 4K",
-        desc: "Enjoy peaceful nature scenes.",
-        embed: "https://www.youtube.com/embed/Scxs7L0vhZ4"
-      },
-      {
-        title: "Top Travel Places 2025",
-        desc: "Explore the most beautiful places to visit.",
-        embed: "https://www.youtube.com/embed/tgbNymZ7vqY"
-      },
-      {
-        title: "Inspirational Talk by Steve Jobs",
-        desc: "Powerful motivational video for success.",
-        embed: "https://www.youtube.com/embed/UF8uR6Z6KLc"
-      },
-      {
-        title: "Ocean Waves for Relaxation",
-        desc: "Calming ocean waves with soothing sounds.",
-        embed: "https://www.youtube.com/embed/mcixldqDIEQ"
+    const supabaseUrl = 'YOUR_SUPABASE_URL';
+    const supabaseKey = 'YOUR_SUPABASE_KEY';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    async function loadVideos() {
+      const { data, error } = await supabase.from('videos').select('*').order('created_at', { ascending: false });
+      const container = document.getElementById('video-list');
+      if (error) {
+        container.innerHTML = `<p>Error loading videos: ${error.message}</p>`;
+        return;
       }
-    ];
+      if (data.length === 0) {
+        container.innerHTML = '<p>No videos yet.</p>';
+        return;
+      }
+      container.innerHTML = data.map(video => `
+        <div class="video-card">
+          <video controls src="${video.video_url}"></video>
+          <h2>${video.title}</h2>
+          <p>${video.description}</p>
+        </div>
+      `).join('');
+    }
 
-    const container = document.getElementById('videos-container');
-    container.innerHTML = '';
-
-    videos.forEach(v => {
-      const card = document.createElement('div');
-      card.className = 'video-card';
-      card.innerHTML = `
-        <iframe src="${v.embed}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        <div class="video-content">
-          <h3 class="video-title">${v.title}</h3>
-          <p class="video-desc">${v.desc}</p>
-        </div>`;
-      container.appendChild(card);
-    });
+    document.getElementById("year").textContent = new Date().getFullYear();
+    loadVideos();
   </script>
 </body>
 </html>

@@ -1,23 +1,18 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/videos", "destination": "/videos.html" },
-    { "source": "/articles", "destination": "/articles.html" },
-    { "source": "/stories", "destination": "/stories.html" },
-    { "source": "/dashboard", "destination": "/dashboard.html" }
-  ],
-  "cleanUrls": true,
-  "trailingSlash": false
-}
-{
+  "version": 2,
   "builds": [
     { "src": "*.html", "use": "@vercel/static" },
     { "src": "*.js", "use": "@vercel/static" },
     { "src": "*.css", "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/videos", "dest": "/videos.html" },
+    { "src": "/articles", "dest": "/articles.html" },
+    { "src": "/stories", "dest": "/stories.html" },
+    { "src": "/dashboard", "dest": "/dashboard.html" },
     { "src": "/(.*)", "dest": "/$1" }
-  ]
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
-
-

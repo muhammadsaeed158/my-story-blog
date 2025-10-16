@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "name": "my-story-blog",
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "server.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/server.js" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}

@@ -90,28 +90,50 @@
 
   <!-- SCRIPT -->
   <script type="module">
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // ---------- Supabase Backend ----------
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
     const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co'
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'
-
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // 🔒 Check if user logged in
+    const { data: { user } } = await supabase.auth.getUser();
+    const navLinks = document.getElementById("nav-links");
+    const authLink = document.getElementById("auth-link");
+
+    if (!user) {
+      // not logged in
+      authLink.innerHTML = `<a href="login.html">Sign In</a>`;
+    } else {
+      // logged in user
+      const { data: profile } = await supabase.from('users').select('name').eq('id', user.id).single();
+      const userName = profile?.name || "My Account";
+      authLink.innerHTML = `
+        <a href="account.html"><i class="fa-solid fa-user"></i> ${userName}</a>
+        <a href="#" id="logout-btn" style="margin-left:10px; color:#ffcc00;">Logout</a>
+      `;
+
+      document.getElementById("logout-btn").addEventListener("click", async () => {
+        await supabase.auth.signOut();
+        window.location.href = "login.html";
+      });
+    }
+
+    // 📰 Fetch Stories
     async function fetchStories() {
       const { data, error } = await supabase
         .from('stories')
         .select('*')
-        .order('created_at', { ascending: false })
-      if(error) { console.error(error); return [] }
-      return data
+        .order('created_at', { ascending: false });
+      if (error) { console.error(error); return []; }
+      return data;
     }
 
     async function displayStories() {
-      const stories = await fetchStories()
-      const grid = document.getElementById('stories-grid')
+      const stories = await fetchStories();
+      const grid = document.getElementById('stories-grid');
       grid.innerHTML = stories.map(s => `
         <div class="card">
           <img src="${s.image || 'https://picsum.photos/400/200?random=' + Math.floor(Math.random()*100)}" alt="${s.title}">
@@ -121,10 +143,10 @@
             <button onclick="window.location.href='story.html?id=${s.id}'">Read More</button>
           </div>
         </div>
-      `).join('')
+      `).join('');
     }
 
-    displayStories()
+    displayStories();
   </script>
 </body>
 </html>

@@ -69,7 +69,10 @@
         <li><a href="account.html">Account</a></li>  
         <li><a href="dashboard.html">Dashboard</a></li>  
         <li><a href="settings.html">Settings</a></li>  
-        <li id="auth-link"><a href="login.html">Sign In</a></li>  
+        <li id="auth-link">  
+          <a href="login.html">Sign In</a>  
+          <p style="margin-top:4px; font-size:14px;">Don’t have an account? <a href="signup.html" style="color:#ffd700;">Sign Up</a></p>  
+        </li>  
       </ul>  
     </nav>  
   </header>  
@@ -110,13 +113,11 @@
     // ✅ Auth Check  
     const { data: { user } } = await supabase.auth.getUser();  
     if (!user) {  
-      window.location.href = 'login.html';  
+      // Not logged in, show Sign In and Sign Up links  
     } else {  
-      // Get user's name from "users" table  
       const { data: profile } = await supabase.from('users').select('name').eq('id', user.id).single();  
       const userName = profile?.name || 'My Account';  
 
-      // Replace "Sign In" with Account Name + Logout  
       navLinks.innerHTML = `  
         <a href="account.html">${userName}</a>  
         <a href="#" id="logout" style="margin-left:10px;color:#ffd700;">Logout</a>  

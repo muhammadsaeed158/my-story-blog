@@ -1,145 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Blog - Home</title>
-
-  <!-- Fonts + Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-  <style>
-    /* ---------- Reset & Base ---------- */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background: #f9fafb; color: #222; }
-    a { text-decoration: none; }
-
-    /* ---------- Header ---------- */
-    header { background: #007bff; color: #fff; padding: 1.2rem; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    header h1 { font-size: 1.9rem; font-weight: 700; }
-    header h1 i { margin-right: 8px; }
-
-    nav ul { display: flex; justify-content: center; flex-wrap: wrap; list-style: none; margin-top: 8px; }
-    nav ul li { margin: 6px 10px; }
-    nav ul li a { color: #fff; font-weight: 600; transition: 0.3s; }
-    nav ul li a:hover, nav ul li a.active { color: #ffd700; }
-
-    /* ---------- Hero ---------- */
-    .hero { text-align: center; padding: 3rem 1rem; background: #e9f3ff; }
-    .hero h2 { font-size: 2rem; margin-bottom: .5rem; }
-    .hero p { color: #555; }
-    .hero button {
-      margin-top: 1rem; background: #007bff; color: #fff; padding: 10px 22px;
-      border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
-    }
-    .hero button:hover { background: #0056b3; }
-
-    /* ---------- Featured Content ---------- */
-    .featured { max-width: 1200px; margin: 3rem auto; padding: 0 1rem; }
-    .featured h2 { text-align: center; font-size: 1.8rem; margin-bottom: 2rem; color: #333; }
-    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-    .card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; }
-    .card:hover { transform: translateY(-6px); }
-    .card img, .card video { width: 100%; height: 180px; object-fit: cover; }
-    .card .content { padding: 1rem; }
-    .card h3 { margin-bottom: .3rem; color: #007bff; }
-    .card p { color: #555; font-size: .9rem; }
-    .card button {
-      margin-top: .5rem; background: #007bff; color: #fff; padding: 6px 12px;
-      border: none; border-radius: 5px; cursor: pointer; font-weight: 600; transition: 0.3s;
-    }
-    .card button:hover { background: #0056b3; }
-
-    /* ---------- Footer ---------- */
-    footer { background: #222; color: #fff; text-align: center; padding: 2rem 1rem; margin-top: 3rem; }
-    .social-icons { margin-top: 1rem; }
-    .social-icons a { margin: 0 .5rem; font-size: 1.6rem; transition: .3s; }
-    .social-icons a.youtube { color: #FF0000; }
-    .social-icons a.tiktok { color: #69C9D0; }
-    .social-icons a.facebook { color: #1877F2; }
-    .social-icons a.twitter { color: #1DA1F2; }
-    .social-icons a.instagram {
-      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .social-icons a:hover { transform: scale(1.2); opacity: 0.85; }
-  </style>
-</head>
-
-<body>
-
-  <!-- ---------- HEADER ---------- -->
-  <header>
-    <h1><i class="fa-solid fa-earth-asia"></i> My Blog</h1>
-    <nav>
-      <ul id="nav-links">
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="stories.html">Stories</a></li>
-        <li><a href="articles.html">Articles</a></li>
-        <li><a href="videos.html">Videos</a></li>
-        <li><a href="website.html">Website Demo</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="settings.html">Settings</a></li>
-        <li id="auth-link"><a href="login.html">Sign In</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- ---------- HERO ---------- -->
-  <section class="hero">
-    <h2>Welcome to My Blog</h2>
-    <p>Share your stories, articles, and videos with the world.</p>
-    <button onclick="window.location.href='website.html'">🎥 Watch Website Demo</button>
-  </section>
-
-  <!-- ---------- FEATURED CONTENT ---------- -->
-  <section class="featured">
-    <h2>🌟 Featured Content</h2>
-    <div class="card-grid" id="featured-grid">
-      <!-- Dynamic cards inserted by JS -->
-    </div>
-  </section>
-
-  <!-- ---------- FOOTER ---------- -->
-  <footer>
-    <p>© <span id="year"></span> My Blog — powered by blogging website</p>
-    <div class="social-icons">
-      <a href="https://www.youtube.com/@MakeHome-k4e" class="youtube" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-      <a href="https://tiktok.com/@halal.laugh.uk.funny786" class="tiktok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://www.facebook.com/profile.php?id=61579375657137" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
-      <a href="https://twitter.com" class="twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-      <a href="https://instagram.com" class="instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // Featured cards sample data
-    const featuredData = [
-      { type: "story", title: "Amazing Story", description: "Read an amazing story...", img: "https://picsum.photos/400/200?random=1" },
-      { type: "article", title: "Coding Article", description: "Learn coding step by step...", img: "https://picsum.photos/400/200?random=2" },
-      { type: "video", title: "Funny Video", description: "Watch this hilarious video...", img: "https://picsum.photos/400/200?random=3" },
-    ];
-
-    const featuredGrid = document.getElementById("featured-grid");
-    featuredData.forEach(item => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${item.img}" alt="${item.title}">
-        <div class="content">
-          <h3>${item.title}</h3>
-          <p>${item.description}</p>
-          <button onclick="alert('Open ${item.type} page')">Read More</button>
-        </div>
-      `;
-      featuredGrid.appendChild(card);
-    });
-  </script>
-
-</body>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>My Blog - Home</title>  
+  
+  <!-- Fonts + Icons -->  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">  
+  
+  <style>  
+    /* ---------- Reset & Base ---------- */  
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }  
+    body { background: #f9fafb; color: #222; }  
+    a { text-decoration: none; }  
+  
+    /* ---------- Header ---------- */  
+    header { background: #007bff; color: #fff; padding: 1.2rem; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }  
+    header h1 { font-size: 1.9rem; font-weight: 700; }  
+    header h1 i { margin-right: 8px; }  
+  
+    nav ul { display: flex; justify-content: center; flex-wrap: wrap; list-style: none; margin-top: 8px; }  
+    nav ul li { margin: 6px 10px; }  
+    nav ul li a { color: #fff; font-weight: 600; transition: 0.3s; }  
+    nav ul li a:hover, nav ul li a.active { color: #ffd700; }  
+  
+    /* ---------- Hero ---------- */  
+    .hero { text-align: center; padding: 3rem 1rem; background: #e9f3ff; }  
+    .hero h2 { font-size: 2rem; margin-bottom: .5rem; }  
+    .hero p { color: #555; }  
+    .hero button {  
+      margin-top: 1rem; background: #007bff; color: #fff; padding: 10px 22px;  
+      border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;  
+    }  
+    .hero button:hover { background: #0056b3; }  
+  
+    /* ---------- Featured Content ---------- */  
+    .featured { max-width: 1200px; margin: 3rem auto; padding: 0 1rem; }  
+    .featured h2 { text-align: center; font-size: 1.8rem; margin-bottom: 2rem; color: #333; }  
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }  
+    .card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s; }  
+    .card:hover { transform: translateY(-6px); }  
+    .card img, .card video { width: 100%; height: 180px; object-fit: cover; }  
+    .card .content { padding: 1rem; }  
+    .card h3 { margin-bottom: .3rem; color: #007bff; }  
+    .card p { color: #555; font-size: .9rem; }  
+    .card button {  
+      margin-top: .5rem; background: #007bff; color: #fff; padding: 6px 12px;  
+      border: none; border-radius: 5px; cursor: pointer; font-weight: 600; transition: 0.3s;  
+    }  
+    .card button:hover { background: #0056b3; }  
+  
+    /* ---------- Footer ---------- */  
+    footer { background: #222; color: #fff; text-align: center; padding: 2rem 1rem; margin-top: 3rem; }  
+    .social-icons { margin-top: 1rem; }  
+    .social-icons a { margin: 0 .5rem; font-size: 1.6rem; transition: .3s; }  
+    .social-icons a.youtube { color: #FF0000; }  
+    .social-icons a.tiktok { color: #69C9D0; }  
+    .social-icons a.facebook { color: #1877F2; }  
+    .social-icons a.twitter { color: #1DA1F2; }  
+    .social-icons a.instagram {  
+      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);  
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;  
+    }  
+    .social-icons a:hover { transform: scale(1.2); opacity: 0.85; }  
+  </style>  
+</head>  
+  
+<body>  
+  
+  <!-- ---------- HEADER ---------- -->  
+  <header>  
+    <h1><i class="fa-solid fa-earth-asia"></i> My Blog</h1>  
+    <nav>  
+      <ul id="nav-links">  
+        <li><a href="index.html" class="active">Home</a></li>  
+        <li><a href="stories.html">Stories</a></li>  
+        <li><a href="articles.html">Articles</a></li>  
+        <li><a href="videos.html">Videos</a></li>  
+        <li><a href="website.html">Website Demo</a></li>  
+        <li><a href="about.html">About</a></li>  
+        <li><a href="contact.html">Contact</a></li>  
+        <li><a href="inbox.html">Inbox</a></li>  
+        <li><a href="account.html">Account</a></li>  
+        <li><a href="dashboard.html">Dashboard</a></li>  
+        <li><a href="settings.html">Settings</a></li>  
+        <li id="auth-link"><a href="login.html">Sign In</a></li>  
+      </ul>  
+    </nav>  
+  </header>  
+  
+  <!-- ---------- HERO ---------- -->  
+  <section class="hero">  
+    <h2>Welcome to My Blog</h2>  
+    <p>Share your stories, articles, and videos with the world.</p>  
+    <button onclick="window.location.href='website.html'">🎥 Watch Website Demo</button>  
+  </section>  
+  
+  <!-- ---------- FEATURED CONTENT ---------- -->  
+  <section class="featured">  
+    <h2>🌟 Featured Content</h2>  
+    <div class="card-grid" id="featured-grid">  
+      <!-- Dynamic cards inserted by JS -->  
+    </div>  
+  </section>  
+  
+  <!-- ---------- FOOTER ---------- -->  
+  <footer>  
+    <p>© <span id="year"></span> My Blog — powered by blogging website</p>  
+    <div class="social-icons">  
+      <a href="https://www.youtube.com/@MakeHome-k4e" class="youtube" target="_blank"><i class="fa-brands fa-youtube"></i></a>  
+      <a href="https://tiktok.com/@halal.laugh.uk.funny786" class="tiktok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>  
+      <a href="https://www.facebook.com/profile.php?id=61579375657137" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>  
+      <a href="https://twitter.com" class="twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>  
+      <a href="https://instagram.com" class="instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>  
+    </div>  
+  </footer>  
+  
+  <script>  
+    document.getElementById("year").textContent = new Date().getFullYear();  
+  
+    // Featured cards sample data  
+    const featuredData = [  
+      { type: "story", title: "Amazing Story", description: "Read an amazing story...", img: "https://picsum.photos/400/200?random=1" },  
+      { type: "article", title: "Coding Article", description: "Learn coding step by step...", img: "https://picsum.photos/400/200?random=2" },  
+      { type: "video", title: "Funny Video", description: "Watch this hilarious video...", img: "https://picsum.photos/400/200?random=3" },  
+    ];  
+  
+    const featuredGrid = document.getElementById("featured-grid");  
+    featuredData.forEach(item => {  
+      const card = document.createElement("div");  
+      card.className = "card";  
+      card.innerHTML = `  
+        <img src="${item.img}" alt="${item.title}">  
+        <div class="content">  
+          <h3>${item.title}</h3>  
+          <p>${item.description}</p>  
+          <button onclick="alert('Open ${item.type} page')">Read More</button>  
+        </div>  
+      `;  
+      featuredGrid.appendChild(card);  
+    });  
+  </script>  
+  
+</body>  
 </html>

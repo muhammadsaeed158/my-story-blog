@@ -249,6 +249,7 @@
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
+    // ✅ Supabase Config
     const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co';
     const SUPABASE_KEY =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE';
@@ -265,7 +266,7 @@
       });
     });
 
-    // ✅ Contact Form Submission
+    // ✅ Contact Form Submission (Save to Supabase Table)
     const form = document.getElementById('contactForm');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -279,6 +280,7 @@
         return;
       }
 
+      // Save message in Supabase table 'messages'
       const { error } = await supabase.from('messages').insert([{ name, email, message }]);
 
       if (error) {

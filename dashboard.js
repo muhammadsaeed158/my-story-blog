@@ -1,69 +1,66 @@
-import { supabase } from './supabase.js';
-const BACKEND_URL = 'https://myblog-backend.muhammadsaeed158.deno.net';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// Logout
+const supabase = createClient(
+  'https://ynvhluadxmsjoihdjmky.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'
+);
+
+// ------------------ AUTH CHECK ------------------
+supabase.auth.getUser().then(({ data }) => {
+  if (!data.user) window.location.href = 'login.html';
+});
+
+// ------------------ LOGOUT ------------------
 document.getElementById('logoutBtn').addEventListener('click', async () => {
-  await supabase.auth.signOut();
-  window.location.href = 'auth/login.html';
+  const { error } = await supabase.auth.signOut();
+  if (!error) window.location.href = 'login.html';
+  else alert('Logout failed. Try again.');
 });
 
-// Auth check
-(async () => {
-  const { data: { user }, error } = await supabase.auth.getUser();
-  if(error || !user) { window.location.href = 'auth/login.html'; return; }
-})();
+// ------------------ MESSAGE ------------------
+function showMessage(msg, type='info') {
+  const messageEl = document.getElementById('message');
+  messageEl.textContent = msg;
+  messageEl.style.background = type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff';
+  messageEl.style.opacity = '1';
+  setTimeout(() => messageEl.style.opacity = '0', 4000);
+}
 
-// Submit story
-const form = document.getElementById('storyForm');
-form.addEventListener('submit', async e => {
+// ------------------ PUBLISH FUNCTIONS ------------------
+async function publishStory(e){
   e.preventDefault();
-  const story = {
-    title: document.getElementById('title').value,
-    short_intro: document.getElementById('short_intro').value,
-    image_url: document.getElementById('image_url').value,
-    content: document.getElementById('content').value,
-    user_id: supabase.auth.user()?.id
-  };
-  try {
-    const res = await fetch(`${BACKEND_URL}/stories`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(story)
-    });
-    const data = await res.json();
-    alert('Story published successfully!');
-    form.reset();
-    fetchMyStories();
-  } catch (err) {
-    console.error(err);
-    alert('Failed to publish story.');
-  }
-});
+  const title = document.getElementById('storyTitle').value;
+  const intro = document.getElementById('storyIntro').value;
+  const image_url = document.getElementById('storyImage').value;
 
-// Fetch author's stories
-const myStoriesDiv = document.getElementById('my-stories');
-async function fetchMyStories() {
-  const { data, error } = await supabase.from('stories').select('*').eq('user_id', supabase.auth.user()?.id);
-  myStoriesDiv.innerHTML = '';
-  if (!data || data.length === 0) { myStoriesDiv.innerHTML = '<p>No stories yet.</p>'; return; }
-
-  data.forEach(story => {
-    const div = document.createElement('div');
-    div.className = 'story-card';
-    div.innerHTML = `
-      <h3>${story.title}</h3>
-      <button onclick="editStory('${story.id}')"><i class="fas fa-edit"></i> Edit</button>
-      <button onclick="deleteStory('${story.id}')"><i class="fas fa-trash"></i> Delete</button>
-    `;
-    myStoriesDiv.appendChild(div);
-  });
+  const { data, error } = await supabase.from('stories').insert([{ title, short_intro: intro, image_url }]);
+  if(error) showMessage(error.message, 'error');
+  else { showMessage('Story published!', 'success'); e.target.reset(); }
 }
-fetchMyStories();
 
-// Edit & Delete placeholders
-window.editStory = id => { alert('Edit feature coming soon!'); }
-window.deleteStory = async id => {
-  if (!confirm('Delete this story?')) return;
-  await fetch(`${BACKEND_URL}/stories/${id}`, { method: 'DELETE' });
-  fetchMyStories();
+async function publishArticle(e){
+  e.preventDefault();
+  const title = document.getElementById('articleTitle').value;
+  const intro = document.getElementById('articleIntro').value;
+  const image_url = document.getElementById('articleImage').value;
+
+  const { data, error } = await supabase.from('articles').insert([{ title, short_intro: intro, image_url }]);
+  if(error) showMessage(error.message, 'error');
+  else { showMessage('Article published!', 'success'); e.target.reset(); }
 }
+
+async function publishVideo(e){
+  e.preventDefault();
+  const title = document.getElementById('videoTitle').value;
+  const video_url = document.getElementById('videoURL').value;
+  const thumbnail_url = document.getElementById('videoThumbnail').value;
+
+  const { data, error } = await supabase.from('videos').insert([{ title, video_url, thumbnail_url }]);
+  if(error) showMessage(error.message, 'error');
+  else { showMessage('Video published!', 'success'); e.target.reset(); }
+}
+
+// ------------------ FORM EVENT LISTENERS ------------------
+document.getElementById('storyForm').addEventListener('submit', publishStory);
+document.getElementById('articleForm').addEventListener('submit', publishArticle);
+document.getElementById('videoForm').addEventListener('submit', publishVideo);

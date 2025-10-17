@@ -8,35 +8,24 @@
   <!-- Fonts + Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
 
   <style>
-    /* ---------- Reset & Base ---------- */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     body { background: #f9fafb; color: #222; }
     a { text-decoration: none; }
 
-    /* ---------- Header ---------- */
     header { background: #007bff; color: #fff; padding: 1.2rem; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     header h1 { font-size: 1.9rem; font-weight: 700; }
-    header h1 i { margin-right: 8px; }
-
     nav ul { display: flex; justify-content: center; flex-wrap: wrap; list-style: none; margin-top: 8px; }
     nav ul li { margin: 6px 10px; }
     nav ul li a { color: #fff; font-weight: 600; transition: 0.3s; }
     nav ul li a:hover, nav ul li a.active { color: #ffd700; }
 
-    /* ---------- Hero ---------- */
     .hero { text-align: center; padding: 3rem 1rem; background: #e9f3ff; }
     .hero h2 { font-size: 2rem; margin-bottom: .5rem; }
-    .hero p { color: #555; }
-    .hero button {
-      margin-top: 1rem; background: #007bff; color: #fff; padding: 10px 22px;
-      border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
-    }
+    .hero button { margin-top: 1rem; background: #007bff; color: #fff; padding: 10px 22px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; }
     .hero button:hover { background: #0056b3; }
 
-    /* ---------- Featured Content ---------- */
     .featured { max-width: 1200px; margin: 3rem auto; padding: 0 1rem; }
     .featured h2 { text-align: center; font-size: 1.8rem; margin-bottom: 2rem; color: #333; }
     .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
@@ -46,31 +35,18 @@
     .card .content { padding: 1rem; }
     .card h3 { margin-bottom: .3rem; color: #007bff; }
     .card p { color: #555; font-size: .9rem; }
-    .card button {
-      margin-top: .5rem; background: #007bff; color: #fff; padding: 6px 12px;
-      border: none; border-radius: 5px; cursor: pointer; font-weight: 600; transition: 0.3s;
-    }
+    .card button { margin-top: .5rem; background: #007bff; color: #fff; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; transition: 0.3s; }
     .card button:hover { background: #0056b3; }
 
-    /* ---------- Footer ---------- */
     footer { background: #222; color: #fff; text-align: center; padding: 2rem 1rem; margin-top: 3rem; }
     .social-icons { margin-top: 1rem; }
     .social-icons a { margin: 0 .5rem; font-size: 1.6rem; transition: .3s; }
-    .social-icons a.youtube { color: #FF0000; }
-    .social-icons a.tiktok { color: #69C9D0; }
-    .social-icons a.facebook { color: #1877F2; }
-    .social-icons a.twitter { color: #1DA1F2; }
-    .social-icons a.instagram {
-      background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
     .social-icons a:hover { transform: scale(1.2); opacity: 0.85; }
   </style>
 </head>
 
 <body>
 
-  <!-- ---------- HEADER ---------- -->
   <header>
     <h1><i class="fa-solid fa-earth-asia"></i> My Blog</h1>
     <nav>
@@ -79,80 +55,78 @@
         <li><a href="stories.html">Stories</a></li>
         <li><a href="articles.html">Articles</a></li>
         <li><a href="videos.html">Videos</a></li>
+        <li><a href="website.html">Website Demo</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="website.html">Website Demo</a></li>
         <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="settings.html">Settings</a></li>
         <li id="auth-link"><a href="login.html">Sign In</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- ---------- HERO ---------- -->
   <section class="hero">
     <h2>Welcome to My Blog</h2>
     <p>Share your stories, articles, and videos with the world.</p>
     <button onclick="window.location.href='website.html'">🎥 Watch Website Demo</button>
   </section>
 
-  <!-- ---------- FEATURED CONTENT ---------- -->
   <section class="featured">
     <h2>🌟 Featured Content</h2>
-    <div class="card-grid" id="featured-grid">
-      <!-- Dynamic cards inserted by JS -->
-    </div>
+    <div class="card-grid" id="featured-grid"></div>
   </section>
 
-  <!-- ---------- FOOTER ---------- -->
   <footer>
-    <p>© <span id="year"></span> My Blog — powered by blogging website</p>
+    <p>© <span id="year"></span> My Blog — All Rights Reserved</p>
     <div class="social-icons">
-      <a href="https://www.youtube.com/@MakeHome-k4e" class="youtube" target="_blank"><i class="fa-brands fa-youtube"></i></a>
-      <a href="https://tiktok.com/@halal.laugh.uk.funny786" class="tiktok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-      <a href="https://www.facebook.com/profile.php?id=61579375657137" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+      <a href="https://youtube.com" class="youtube" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+      <a href="https://tiktok.com" class="tiktok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+      <a href="https://facebook.com" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
       <a href="https://twitter.com" class="twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
       <a href="https://instagram.com" class="instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
     </div>
   </footer>
 
-  <!-- ---------- SCRIPT ---------- -->
-  <script>
+  <script type="module">
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Initialize Supabase
-    const SUPABASE_URL = "https://ynvhluadxmsjoihdjmky.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE";
-    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // ------------------ Supabase Auth ------------------
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(
+      'https://ynvhluadxmsjoihdjmky.supabase.co',
+      'YOUR_SUPABASE_ANON_KEY'
+    );
 
-    async function fetchFeatured() {
+    // Show login/logout based on auth
+    supabase.auth.getUser().then(({data})=>{
+      const authLink = document.getElementById('auth-link');
+      if(data.user) authLink.innerHTML = '<a href="dashboard.html">Dashboard</a>';
+      else authLink.innerHTML = '<a href="login.html">Sign In</a>';
+    });
+
+    // ------------------ Fetch stories/articles/videos ------------------
+    async function fetchContent() {
       const { data: stories } = await supabase.from('stories').select('*').order('created_at', { ascending: false }).limit(3);
       const { data: articles } = await supabase.from('articles').select('*').order('created_at', { ascending: false }).limit(3);
       const { data: videos } = await supabase.from('videos').select('*').order('created_at', { ascending: false }).limit(3);
 
       const featuredGrid = document.getElementById("featured-grid");
 
-      function createCard(item, type) {
+      stories.forEach(item => {
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-          <img src="${item.thumbnail || 'https://picsum.photos/400/200'}" alt="${item.title}">
-          <div class="content">
-            <h3>${item.title}</h3>
-            <p>${item.description || ''}</p>
-            <button onclick="window.location.href='${type}.html?id=${item.id}'">Read More</button>
-          </div>
+          <h3>📖 ${item.title}</h3>
+          <p>${item.description}</p>
+          <button onclick="window.location.href='stories.html'">Read Story</button>
         `;
         featuredGrid.appendChild(card);
-      }
+      });
 
-      if (stories) stories.forEach(s => createCard(s, 'stories'));
-      if (articles) articles.forEach(a => createCard(a, 'articles'));
-      if (videos) videos.forEach(v => createCard(v, 'videos'));
-    }
-
-    fetchFeatured();
-  </script>
-
-</body>
-</html>
+      articles.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>📰 ${item.title}</h3>
+          <p>${item.description}</p>
+          <button onclick="window.location.href='articles.html'">Read Article</button>
+        `;

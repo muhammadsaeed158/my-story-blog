@@ -101,6 +101,7 @@
 
   <script type="module">  
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';  
+
     const supabase = createClient(  
       'https://ynvhluadxmsjoihdjmky.supabase.co',  
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'  
@@ -110,23 +111,34 @@
     const navLinks = document.getElementById("auth-link");  
     yearEl.textContent = new Date().getFullYear();  
 
-    // ✅ Auth Check  
+    // ✅ Step 1: Protect home page  
     const { data: { user } } = await supabase.auth.getUser();  
     if (!user) {  
-      // Not logged in, show Sign In and Sign Up links  
+      window.location.href = "login.html";  
     } else {  
-      const { data: profile } = await supabase.from('users').select('name').eq('id', user.id).single();  
-      const userName = profile?.name || 'My Account';  
-
-      navLinks.innerHTML = `  
-        <a href="account.html">${userName}</a>  
-        <a href="#" id="logout" style="margin-left:10px;color:#ffd700;">Logout</a>  
-      `;  
-
-      document.getElementById('logout').addEventListener('click', async () => {  
+      // ✅ Step 2: Email confirmation required  
+      if (!user.email_confirmed_at) {  
+        alert("Please verify your email first before accessing the site.");  
         await supabase.auth.signOut();  
-        window.location.href = 'login.html';  
-      });  
+        window.location.href = "login.html";  
+      } else {  
+        const { data: profile } = await supabase  
+          .from('users')  
+          .select('name')  
+          .eq('id', user.id)  
+          .single();  
+
+        const userName = profile?.name || user.email;  
+        navLinks.innerHTML = `  
+          <a href="account.html">${userName}</a>  
+          <a href="#" id="logout" style="margin-left:10px;color:#ffd700;">Logout</a>  
+        `;  
+
+        document.getElementById('logout').addEventListener('click', async () => {  
+          await supabase.auth.signOut();  
+          window.location.href = 'login.html';  
+        });  
+      }  
     }  
 
     // ✅ Featured content display  

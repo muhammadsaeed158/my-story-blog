@@ -6,7 +6,7 @@
       "use": "@vercel/static"
     },
     {
-      "src": "assets/**/*",
+      "src": "css/**/*.css",
       "use": "@vercel/static"
     },
     {
@@ -14,11 +14,28 @@
       "use": "@vercel/static"
     },
     {
-      "src": "css/**/*.css",
+      "src": "images/**/*",
       "use": "@vercel/static"
     }
   ],
   "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/index.html", "dest": "/index.html" },
+    { "src": "/stories.html", "dest": "/stories.html" },
+    { "src": "/articles.html", "dest": "/articles.html" },
+    { "src": "/videos.html", "dest": "/videos.html" },
+    { "src": "/dashboard.html", "dest": "/dashboard.html" },
+    { "src": "/settings.html", "dest": "/settings.html" },
+    { "src": "/login.html", "dest": "/login.html" },
+    { "src": "/signup.html", "dest": "/signup.html" },
+    { "src": "/forgot-password.html", "dest": "/forgot-password.html" },
+    { "src": "/about.html", "dest": "/about.html" },
+    { "src": "/contact.html", "dest": "/contact.html" },
     { "src": "/(.*)", "dest": "/index.html" }
-  ]
+  ],
+  "env": {
+    "SUPABASE_URL": "https://ynvhluadxmsjoihdjmky.supabase.co",
+    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE",
+    "BACKEND_URL": "https://my-blog-api.deno.dev"
+  }
 }

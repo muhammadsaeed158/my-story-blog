@@ -19,24 +19,15 @@
       justify-content: space-between;
       align-items: center;
     }
-    header h1 { margin: 0; }
+    header h1 { margin: 0; font-size: 1.5rem; }
     nav a {
       color: white;
       margin-left: 20px;
       text-decoration: none;
+      font-weight: 600;
     }
     nav a:hover {
       text-decoration: underline;
-    }
-    .content {
-      padding: 20px;
-    }
-    .video-section, .article-section {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .logout-btn {
       background: #dc3545;
@@ -50,17 +41,29 @@
     .logout-btn:hover {
       background: #b02a37;
     }
+    .content {
+      padding: 20px;
+    }
+    section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Welcome to My Blog</h1>
+    <h1>My Blog</h1>
     <nav>
-      <a href="#">Videos</a>
-      <a href="#">Articles</a>
+      <a href="index.html">Home</a>
+      <a href="videos.html">Videos</a>
+      <a href="articles.html">Articles</a>
+      <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
-      <button id="logout" class="logout-btn">Logout</button>
+      <button id="logoutBtn" class="logout-btn">Logout</button>
     </nav>
   </header>
 
@@ -78,11 +81,13 @@
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    const supabase = createClient('https://ynvhluadxmsjoihdjmky.supabase.co',
+
+    const supabase = createClient(
+      'https://ynvhluadxmsjoihdjmky.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'
     );
 
-    // ✅ Check if logged in
+    // ✅ Check if user is logged in
     supabase.auth.getUser().then(({ data }) => {
       if (!data.user) {
         window.location.href = 'login.html';
@@ -90,10 +95,14 @@
     });
 
     // ✅ Logout
-    document.getElementById('logout').addEventListener('click', async () => {
-      await supabase.auth.signOut();
-      window.location.href = 'login.html';
-    });
+    const logoutBtn = document.getElementById('logoutBtn');
+    if(logoutBtn){
+      logoutBtn.addEventListener('click', async () => {
+        const { error } = await supabase.auth.signOut();
+        if(!error) window.location.href = 'login.html';
+        else alert('Logout failed. Please try again.');
+      });
+    }
   </script>
 
 </body>

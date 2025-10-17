@@ -51,7 +51,7 @@
     .social-icons a.instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .social-icons a:hover { transform: scale(1.2); opacity: 0.85; }
 
-    /* Hide main content until verified user */
+    /* Hide main content until user verified */
     #main-content { display: none; }
   </style>
 </head>
@@ -68,14 +68,7 @@
         <li><a href="website.html">Website Demo</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="inbox.html">Inbox</a></li>
-        <li><a href="account.html">Account</a></li>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="settings.html">Settings</a></li>
-        <li id="auth-link">
-          <a href="login.html">Sign In</a>
-          <p style="margin-top:4px; font-size:14px;">Don’t have an account? <a href="signup.html" style="color:#ffd700;">Sign Up</a></p>
-        </li>
+        <li id="auth-link"></li>
       </ul>
     </nav>
   </header>
@@ -121,43 +114,41 @@
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        // User not logged in → show Sign In / Sign Up
-        mainContent.style.display = "none";
+        // Not logged in → show login/signup links
         navLinks.innerHTML = `
           <a href="login.html">Sign In</a>
           <p style="margin-top:4px; font-size:14px;">Don’t have an account? <a href="signup.html" style="color:#ffd700;">Sign Up</a></p>
         `;
+        mainContent.style.display = "none";
+      } else if (!user.email_confirmed_at) {
+        // Email not verified
+        alert("Please verify your email before accessing the site. Check your inbox!");
+        await supabase.auth.signOut();
+        window.location.href = "login.html";
       } else {
-        // Email confirmation required
-        if (!user.email_confirmed_at) {
-          alert("Please verify your email first before accessing the site.");
+        // Logged in & verified → show home content
+        mainContent.style.display = "block";
+
+        const { data: profile } = await supabase
+          .from('users')
+          .select('name')
+          .eq('id', user.id)
+          .single();
+
+        const userName = profile?.name || user.email;
+
+        navLinks.innerHTML = `
+          <a href="account.html">${userName}</a>
+          <a href="#" id="logout" style="margin-left:10px;color:#ffd700;">Logout</a>
+        `;
+
+        document.getElementById('logout').addEventListener('click', async () => {
           await supabase.auth.signOut();
-          window.location.href = "login.html";
-        } else {
-          // Verified user → show content
-          mainContent.style.display = "block";
-
-          const { data: profile } = await supabase
-            .from('users')
-            .select('name')
-            .eq('id', user.id)
-            .single();
-
-          const userName = profile?.name || user.email;
-
-          navLinks.innerHTML = `
-            <a href="account.html">${userName}</a>
-            <a href="#" id="logout" style="margin-left:10px;color:#ffd700;">Logout</a>
-          `;
-
-          document.getElementById('logout').addEventListener('click', async () => {
-            await supabase.auth.signOut();
-            window.location.href = 'login.html';
-          });
-        }
+          window.location.href = 'login.html';
+        });
       }
 
-      // Featured content display
+      // Featured content
       const featuredData = [
         { type: "story", title: "Amazing Story", description: "Read an amazing story...", img: "https://picsum.photos/400/200?random=1" },
         { type: "article", title: "Coding Article", description: "Learn coding step by step...", img: "https://picsum.photos/400/200?random=2" },

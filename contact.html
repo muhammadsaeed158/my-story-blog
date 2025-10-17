@@ -159,6 +159,22 @@
       transform: scale(1.03);
     }
 
+    #successMsg {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: 500;
+      color: green;
+      display: none;
+    }
+
+    #errorMsg {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: 500;
+      color: red;
+      display: none;
+    }
+
     footer {
       text-align: center;
       background: #0077cc;
@@ -239,6 +255,9 @@
       <textarea id="message" placeholder="Write your message here..." required></textarea>
       <button type="submit"><i class="fas fa-paper-plane"></i> Send Message</button>
     </form>
+
+    <p id="successMsg">✅ Message sent successfully!</p>
+    <p id="errorMsg">❌ Failed to send message. Please try again.</p>
   </main>
 
   <footer>
@@ -249,14 +268,17 @@
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    // ✅ Supabase Config
     const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co';
     const SUPABASE_KEY =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE';
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // ✅ Copy Button Functionality
+    const form = document.getElementById('contactForm');
+    const successMsg = document.getElementById('successMsg');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // ✅ Copy link functionality
     document.querySelectorAll('.copy-btn').forEach((btn) => {
       btn.addEventListener('click', async () => {
         const link = btn.getAttribute('data-link');
@@ -266,32 +288,35 @@
       });
     });
 
-    // ✅ Contact Form Submission (Save to Supabase Table)
-    const form = document.getElementById('contactForm');
+    // ✅ Contact form handler
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
 
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const message = document.getElementById('message').value.trim();
 
       if (!name || !email || !message) {
-        alert('⚠️ Please fill all fields!');
+        errorMsg.textContent = '⚠️ Please fill all fields.';
+        errorMsg.style.display = 'block';
         return;
       }
 
-      // Save message in Supabase table 'messages'
       const { error } = await supabase.from('messages').insert([{ name, email, message }]);
 
       if (error) {
-        alert('❌ Failed to send message: ' + error.message);
+        errorMsg.textContent = '❌ ' + error.message;
+        errorMsg.style.display = 'block';
       } else {
-        alert('✅ Message sent successfully!');
+        successMsg.style.display = 'block';
         form.reset();
+        setTimeout(() => (successMsg.style.display = 'none'), 4000);
       }
     });
 
-    // ✅ Auto Year
+    // ✅ Auto year
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>

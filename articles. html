@@ -1,71 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Articles - My Blog</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-  <style>
-    body { font-family: 'Poppins', sans-serif; margin:0; background:#f9fafb; color:#222; }
-    header { background:#007bff; color:white; padding:1.2rem; text-align:center; }
-    header a { color:white; text-decoration:none; font-weight:600; }
-    .container { max-width:1000px; margin:2rem auto; padding:1rem; }
-    h1 { text-align:center; margin-bottom:2rem; }
-    .article-card {
-      background:white; border-radius:12px; padding:1rem; margin-bottom:1.5rem;
-      box-shadow:0 4px 10px rgba(0,0,0,0.1);
-      transition: transform .2s ease-in-out;
-    }
-    .article-card:hover { transform: translateY(-5px); }
-    .article-card h2 { color:#007bff; margin-bottom:.5rem; }
-    .article-card p { color:#555; }
-    footer { background:#222; color:white; text-align:center; padding:1rem; margin-top:3rem; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Blog - Articles</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+body { background:#f9fafb; color:#222; }
+a { text-decoration:none; }
+header { background:#007bff; color:#fff; padding:1rem; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+header h1 { font-size:1.8rem; font-weight:700; }
+nav ul { display:flex; justify-content:center; flex-wrap:wrap; list-style:none; margin-top:8px; }
+nav ul li { margin:6px 10px; }
+nav ul li a { color:#fff; font-weight:600; transition:.3s; }
+nav ul li a:hover, nav ul li a.active { color:#ffd700; }
+.hero { text-align:center; padding:2rem 1rem; background:#e9f3ff; }
+.hero h2 { font-size:1.8rem; margin-bottom:.5rem; }
+.hero p { color:#555; }
+.featured { max-width:1200px; margin:2rem auto; padding:0 1rem; }
+.featured h2 { text-align:center; font-size:1.7rem; margin-bottom:1.5rem; color:#333; }
+.card-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:1.5rem; }
+.card { background:#fff; border-radius:15px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.1); transition:.3s; }
+.card:hover { transform:translateY(-6px); }
+.card img { width:100%; height:180px; object-fit:cover; }
+.card .content { padding:1rem; }
+.card h3 { margin-bottom:.3rem; color:#007bff; }
+.card p { color:#555; font-size:.9rem; }
+.card button { margin-top:.5rem; background:#007bff; color:#fff; padding:6px 12px; border:none; border-radius:5px; cursor:pointer; font-weight:600; transition:.3s; }
+.card button:hover { background:#0056b3; }
+footer { background:#222; color:#fff; text-align:center; padding:2rem 1rem; margin-top:3rem; }
+.social-icons { margin-top:1rem; }
+.social-icons a { margin:0 .5rem; font-size:1.6rem; transition:.3s; }
+.social-icons a.youtube { color:#FF0000; }
+.social-icons a.tiktok { color:#69C9D0; }
+.social-icons a.facebook { color:#1877F2; }
+.social-icons a.twitter { color:#1DA1F2; }
+.social-icons a.instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.social-icons a:hover { transform:scale(1.2); opacity:.85; }
+</style>
 </head>
 <body>
-  <header>
-    <a href="index.html"><i class="fa-solid fa-house"></i> Back to Home</a>
-  </header>
 
-  <div class="container">
-    <h1>📚 Latest Articles</h1>
-    <div id="article-list">Loading articles...</div>
-  </div>
+<header>
+<h1><i class="fa-solid fa-earth-asia"></i> My Blog</h1>
+<nav>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="stories.html">Stories</a></li>
+<li><a href="articles.html" class="active">Articles</a></li>
+<li><a href="videos.html">Videos</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="settings.html">Settings</a></li>
+<li id="auth-link"><a href="login.html">Sign In</a></li>
+</ul>
+</nav>
+</header>
 
-  <footer>© <span id="year"></span> My Blog</footer>
+<section class="hero">
+<h2>All Articles</h2>
+<p>Explore articles written by our users.</p>
+</section>
 
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+<section class="featured">
+<h2>📝 Latest Articles</h2>
+<div class="card-grid" id="articles-grid"></div>
+</section>
 
-    const supabaseUrl = 'https://ynvhluadxmsjoihdjmky.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE';
-    const supabase = createClient(supabaseUrl, supabaseKey);
+<footer>
+<p>© <span id="year"></span> My Blog — All Rights Reserved</p>
+<div class="social-icons">
+<a href="https://www.youtube.com/@MakeHome-k4e" class="youtube" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+<a href="https://tiktok.com/@halal.laugh.uk.funny786" class="tiktok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+<a href="https://www.facebook.com/profile.php?id=61579375657137" class="facebook" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+<a href="https://twitter.com" class="twitter" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+<a href="https://instagram.com" class="instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+</div>
+</footer>
 
-    async function loadArticles() {
-      const { data, error } = await supabase.from('articles').select('*').order('created_at', { ascending: false });
-      const container = document.getElementById('article-list');
-      if (error) {
-        container.innerHTML = `<p style="color:red;">Error loading articles: ${error.message}</p>`;
-        return;
-      }
-      if (!data || data.length === 0) {
-        container.innerHTML = '<p>No articles available yet.</p>';
-        return;
-      }
+<script type="module">
+document.getElementById("year").textContent = new Date().getFullYear();
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-      container.innerHTML = data.map(article => `
-        <div class="article-card">
-          <h2>${article.title}</h2>
-          <p>${article.content || 'No description available.'}</p>
-        </div>
-      `).join('');
-    }
+async function fetchArticles() {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('*')
+    .order('created_at', { ascending:false })
+  if(error) { console.error(error); return [] }
+  return data
+}
 
-    document.getElementById("year").textContent = new Date().getFullYear();
-    loadArticles();
-  </script>
+async function displayArticles() {
+  const articles = await fetchArticles()
+  const grid = document.getElementById('articles-grid')
+  grid.innerHTML = articles.map(a => `
+    <div class="card">
+      <img src="${a.image || 'https://picsum.photos/400/200?random=' + Math.floor(Math.random()*100)}" alt="${a.title}">
+      <div class="content">
+        <h3>${a.title}</h3>
+        <p>${a.short_desc || a.content.substring(0,100) + '...'}</p>
+        <button onclick="window.location.href='article.html?id=${a.id}'">Read More</button>
+      </div>
+    </div>
+  `).join('')
+}
+
+displayArticles()
+</script>
 </body>
 </html>

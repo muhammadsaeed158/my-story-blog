@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -162,6 +165,12 @@
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    // 🔒 Auth check: agar user login nahi to redirect to login.html
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      window.location.href = "login.html";
+    }
+
     const avatarPreview = document.getElementById("avatarPreview");
     const avatarInput = document.getElementById("avatar");
     const form = document.getElementById("accountForm");
@@ -190,15 +199,15 @@
         avatar_url = publicUrl.publicUrl;
       }
 
-      const user = (await supabase.auth.getUser()).data.user;
-      if (!user) {
+      const userNow = (await supabase.auth.getUser()).data.user;
+      if (!userNow) {
         alert("⚠️ Please login first!");
         return;
       }
 
       const { error } = await supabase
         .from("profiles")
-        .upsert({ id: user.id, username, bio, avatar_url });
+        .upsert({ id: userNow.id, username, bio, avatar_url });
 
       if (error) alert("❌ " + error.message);
       else alert("✅ Profile updated successfully!");

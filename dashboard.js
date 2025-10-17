@@ -2,65 +2,102 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const supabase = createClient(
   'https://ynvhluadxmsjoihdjmky.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'
+  'PUBLIC_ANON_KEY' // replace with your Supabase anon key
 );
 
-// ------------------ AUTH CHECK ------------------
+const publishBtn = document.getElementById('publishBtn');
+const postType = document.getElementById('postType');
+const postTitle = document.getElementById('postTitle');
+const postDesc = document.getElementById('postDesc');
+const postFile = document.getElementById('postFile');
+const postsContainer = document.getElementById('postsContainer');
+
+// Check if user is logged in
 supabase.auth.getUser().then(({ data }) => {
   if (!data.user) window.location.href = 'login.html';
 });
 
-// ------------------ LOGOUT ------------------
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  const { error } = await supabase.auth.signOut();
-  if (!error) window.location.href = 'login.html';
-  else alert('Logout failed. Try again.');
+async function fetchPosts() {
+  postsContainer.innerHTML = '';
+  const { data: posts } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+  
+  posts.forEach(post => {
+    const postEl = document.createElement('div');
+    postEl.className = 'post';
+    postEl.innerHTML = `
+      <h3>${post.title} (${post.type})</h3>
+      <p>${post.description}</p>
+      ${post.file_url ? `<${post.type === 'video' ? 'video' : 'img'} src="${post.file_url}" ${post.type === 'video' ? 'controls' : ''} width="100%"></${post.type === 'video' ? 'video' : 'img'}>` : ''}
+      <div class="actions">
+        <button onclick="likePost('${post.id}')">👍 ${post.likes || 0}</button>
+        <button onclick="showCommentPrompt('${post.id}')">💬 Comment</button>
+      </div>
+      <div class="comments" id="comments-${post.id}"></div>
+    `;
+    postsContainer.appendChild(postEl);
+    fetchComments(post.id);
+  });
+}
+
+async function fetchComments(postId) {
+  const { data: comments } = await supabase.from('comments').select('*').eq('post_id', postId);
+  const commentsDiv = document.getElementById(`comments-${postId}`);
+  commentsDiv.innerHTML = '';
+  comments.forEach(c => {
+    const commentEl = document.createElement('div');
+    commentEl.className = 'comment';
+    commentEl.textContent = `${c.user_email}: ${c.text}`;
+    commentsDiv.appendChild(commentEl);
+  });
+}
+
+async function likePost(postId) {
+  const { data: post } = await supabase.from('posts').select('likes').eq('id', postId).single();
+  const newLikes = (post.likes || 0) + 1;
+  await supabase.from('posts').update({ likes: newLikes }).eq('id', postId);
+  fetchPosts();
+}
+
+function showCommentPrompt(postId) {
+  const comment = prompt('Write your comment:');
+  if (comment) addComment(postId, comment);
+}
+
+async function addComment(postId, text) {
+  const user = await supabase.auth.getUser();
+  if (!user.data.user) return;
+  await supabase.from('comments').insert({
+    post_id: postId,
+    user_email: user.data.user.email,
+    text
+  });
+  fetchPosts();
+}
+
+// Upload & publish
+publishBtn.addEventListener('click', async () => {
+  const type = postType.value;
+  const title = postTitle.value;
+  const description = postDesc.value;
+  const file = postFile.files[0];
+
+  let file_url = null;
+  if (file) {
+    const fileName = `${Date.now()}_${file.name}`;
+    const { data, error } = await supabase.storage.from('posts').upload(fileName, file);
+    if (error) return alert('Upload failed: ' + error.message);
+    const { publicUrl } = supabase.storage.from('posts').getPublicUrl(fileName);
+    file_url = publicUrl;
+  }
+
+  const { error } = await supabase.from('posts').insert([{ type, title, description, file_url }]);
+  if (error) return alert('Publish failed: ' + error.message);
+
+  postTitle.value = '';
+  postDesc.value = '';
+  postFile.value = '';
+  fetchPosts();
 });
 
-// ------------------ MESSAGE ------------------
-function showMessage(msg, type='info') {
-  const messageEl = document.getElementById('message');
-  messageEl.textContent = msg;
-  messageEl.style.background = type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff';
-  messageEl.style.opacity = '1';
-  setTimeout(() => messageEl.style.opacity = '0', 4000);
-}
-
-// ------------------ PUBLISH FUNCTIONS ------------------
-async function publishStory(e){
-  e.preventDefault();
-  const title = document.getElementById('storyTitle').value;
-  const intro = document.getElementById('storyIntro').value;
-  const image_url = document.getElementById('storyImage').value;
-
-  const { data, error } = await supabase.from('stories').insert([{ title, short_intro: intro, image_url }]);
-  if(error) showMessage(error.message, 'error');
-  else { showMessage('Story published!', 'success'); e.target.reset(); }
-}
-
-async function publishArticle(e){
-  e.preventDefault();
-  const title = document.getElementById('articleTitle').value;
-  const intro = document.getElementById('articleIntro').value;
-  const image_url = document.getElementById('articleImage').value;
-
-  const { data, error } = await supabase.from('articles').insert([{ title, short_intro: intro, image_url }]);
-  if(error) showMessage(error.message, 'error');
-  else { showMessage('Article published!', 'success'); e.target.reset(); }
-}
-
-async function publishVideo(e){
-  e.preventDefault();
-  const title = document.getElementById('videoTitle').value;
-  const video_url = document.getElementById('videoURL').value;
-  const thumbnail_url = document.getElementById('videoThumbnail').value;
-
-  const { data, error } = await supabase.from('videos').insert([{ title, video_url, thumbnail_url }]);
-  if(error) showMessage(error.message, 'error');
-  else { showMessage('Video published!', 'success'); e.target.reset(); }
-}
-
-// ------------------ FORM EVENT LISTENERS ------------------
-document.getElementById('storyForm').addEventListener('submit', publishStory);
-document.getElementById('articleForm').addEventListener('submit', publishArticle);
-document.getElementById('videoForm').addEventListener('submit', publishVideo);
+// Initial load
+fetchPosts();

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Account - My Blog</title>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #f9f9f9);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: linear-gradient(90deg, #0077cc, #00c6ff);
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a.active {
+      border-bottom: 2px solid #fff;
+    }
+
+    main {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    .profile {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #0077cc;
+      margin-bottom: 15px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input, textarea {
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #0077cc;
+      box-shadow: 0 0 6px rgba(0,119,204,0.3);
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    button {
+      background: linear-gradient(90deg, #00c6ff, #0077cc);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 3px 8px rgba(0,119,204,0.3);
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #0077cc, #00c6ff);
+      transform: scale(1.03);
+    }
+
+    footer {
+      text-align: center;
+      background: #0077cc;
+      color: #fff;
+      padding: 15px 0;
+      margin-top: 30px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>👤 My Account</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="stories.html">Stories</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="account.html" class="active">Account</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Update Profile</h2>
+
+    <div class="profile">
+      <img id="avatarPreview" class="avatar" src="https://via.placeholder.com/120" alt="Profile Picture" />
+    </div>
+
+    <form id="accountForm">
+      <input type="text" id="username" placeholder="Enter your name" required />
+      <textarea id="bio" placeholder="Write your bio..."></textarea>
+      <input type="file" id="avatar" accept="image/*" />
+      <button type="submit"><i class="fas fa-save"></i> Save Profile</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> My Blog — Account</p>
+  </footer>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+    const SUPABASE_URL = "https://ynvhluadxmsjoihdjmky.supabase.co";
+    const SUPABASE_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const avatarPreview = document.getElementById("avatarPreview");
+    const avatarInput = document.getElementById("avatar");
+    const form = document.getElementById("accountForm");
+
+    avatarInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) avatarPreview.src = URL.createObjectURL(file);
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const bio = document.getElementById("bio").value.trim();
+      const file = avatarInput.files[0];
+
+      let avatar_url = null;
+
+      if (file) {
+        const filePath = `avatars/${Date.now()}_${file.name}`;
+        const { error: uploadError } = await supabase.storage.from("posts").upload(filePath, file);
+        if (uploadError) {
+          alert("❌ Failed to upload image: " + uploadError.message);
+          return;
+        }
+        const { data: publicUrl } = supabase.storage.from("posts").getPublicUrl(filePath);
+        avatar_url = publicUrl.publicUrl;
+      }
+
+      const user = (await supabase.auth.getUser()).data.user;
+      if (!user) {
+        alert("⚠️ Please login first!");
+        return;
+      }
+
+      const { error } = await supabase
+        .from("profiles")
+        .upsert({ id: user.id, username, bio, avatar_url });
+
+      if (error) alert("❌ " + error.message);
+      else alert("✅ Profile updated successfully!");
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

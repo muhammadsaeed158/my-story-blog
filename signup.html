@@ -1,49 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign Up - My Blog</title>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .signup-box {
+      background: #fff;
+      padding: 2rem 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #007bff;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background: #0056b3; }
+    p {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    a { color: #007bff; text-decoration: none; font-weight: 600; }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>My Blog</h1>
-    <nav>
-      <a href="index.html">🏠 Home</a>
-      <a href="stories.html">📖 Stories</a>
-      <a href="login.html">Login</a>
-    </nav>
-  </header>
-
-  <main>
-    <h2>Create an Account</h2>
-    <form id="signup-form">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="login.html">Login</a></p>
-  </main>
-
-  <footer>
-    <p>© <span id="year"></span> My Blog - All Rights Reserved</p>
-  </footer>
+  <div class="signup-box">
+    <h2>Create Account</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button id="signupBtn">Sign Up</button>
+    <p>Already have an account? <a href="login.html">Sign In</a></p>
+  </div>
 
   <script type="module">
-    import { supabase } from './supabase.js';
-    document.getElementById('year').textContent = new Date().getFullYear();
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    const form = document.getElementById('signup-form');
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+    const supabase = createClient(
+      'https://ynvhluadxmsjoihdjmky.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'
+    )
 
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if(error) alert(error.message);
-      else alert('Sign up successful! Check your email to confirm.');
-    });
+    document.getElementById("signupBtn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value
+      const password = document.getElementById("password").value
+
+      const { data, error } = await supabase.auth.signUp({ email, password })
+
+      if (error) {
+        alert("❌ " + error.message)
+      } else {
+        alert("✅ Account created! Please check your email to verify.")
+        window.location.href = "login.html"
+      }
+    })
   </script>
 </body>
 </html>

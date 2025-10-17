@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Blog - Home</title>
-  
+
   <!-- Fonts + Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+
   <style>
     /* ---------- Reset & Base ---------- */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -78,6 +79,8 @@
         <li><a href="stories.html">Stories</a></li>
         <li><a href="articles.html">Articles</a></li>
         <li><a href="videos.html">Videos</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
         <li><a href="website.html">Website Demo</a></li>
         <li><a href="dashboard.html">Dashboard</a></li>
         <li><a href="settings.html">Settings</a></li>
@@ -103,7 +106,7 @@
 
   <!-- ---------- FOOTER ---------- -->
   <footer>
-    <p>© <span id="year"></span> My Blog — All Rights Reserved</p>
+    <p>© <span id="year"></span> My Blog — powered by blogging website </p>
     <div class="social-icons">
       <a href="https://www.youtube.com/@MakeHome-k4e" class="youtube" target="_blank"><i class="fa-brands fa-youtube"></i></a>
       <a href="https://tiktok.com/@halal.laugh.uk.funny786" class="tiktok" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
@@ -117,27 +120,38 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Featured cards sample data
-    const featuredData = [
-      { type: "story", title: "Amazing Story", description: "Read an amazing story...", img: "https://picsum.photos/400/200?random=1" },
-      { type: "article", title: "Coding Article", description: "Learn coding step by step...", img: "https://picsum.photos/400/200?random=2" },
-      { type: "video", title: "Funny Video", description: "Watch this hilarious video...", img: "https://picsum.photos/400/200?random=3" },
-    ];
+    // Initialize Supabase
+    const SUPABASE_URL = "https://ynvhluadxmsjoihdjmky.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE";
+    const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const featuredGrid = document.getElementById("featured-grid");
-    featuredData.forEach(item => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${item.img}" alt="${item.title}">
-        <div class="content">
-          <h3>${item.title}</h3>
-          <p>${item.description}</p>
-          <button onclick="alert('Open ${item.type} page')">Read More</button>
-        </div>
-      `;
-      featuredGrid.appendChild(card);
-    });
+    async function fetchFeatured() {
+      const { data: stories } = await supabase.from('stories').select('*').order('created_at', { ascending: false }).limit(3);
+      const { data: articles } = await supabase.from('articles').select('*').order('created_at', { ascending: false }).limit(3);
+      const { data: videos } = await supabase.from('videos').select('*').order('created_at', { ascending: false }).limit(3);
+
+      const featuredGrid = document.getElementById("featured-grid");
+
+      function createCard(item, type) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${item.thumbnail || 'https://picsum.photos/400/200'}" alt="${item.title}">
+          <div class="content">
+            <h3>${item.title}</h3>
+            <p>${item.description || ''}</p>
+            <button onclick="window.location.href='${type}.html?id=${item.id}'">Read More</button>
+          </div>
+        `;
+        featuredGrid.appendChild(card);
+      }
+
+      if (stories) stories.forEach(s => createCard(s, 'stories'));
+      if (articles) articles.forEach(a => createCard(a, 'articles'));
+      if (videos) videos.forEach(v => createCard(v, 'videos'));
+    }
+
+    fetchFeatured();
   </script>
 
 </body>

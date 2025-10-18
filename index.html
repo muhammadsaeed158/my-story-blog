@@ -51,7 +51,7 @@
     .social-icons a.instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .social-icons a:hover { transform: scale(1.2); opacity: 0.85; }
 
-    /* Hide content until login */
+    /* Hide main content until user is logged in */
     #main-content { display: none; }
   </style>
 </head>
@@ -117,15 +117,14 @@
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        // User not logged in → stay on page with Sign In/Sign Up links
+        // Show login/signup page
         mainContent.style.display = "none";
       } else if (!user.email_confirmed_at) {
-        // Email not verified → redirect to login
-        alert("Please verify your email before accessing the site. Check your inbox!");
+        alert("Please verify your email before accessing the site!");
         await supabase.auth.signOut();
         window.location.href = "login.html";
       } else {
-        // User logged in & verified → show content
+        // User logged in → show main content & update navbar
         mainContent.style.display = "block";
 
         const { data: profile } = await supabase
@@ -135,7 +134,6 @@
           .single();
 
         const userName = profile?.name || user.email;
-
         navLinks.innerHTML = `
           <a href="account.html">${userName}</a>
           <a href="#" id="logout" style="margin-left:10px;color:#ffd700;">Logout</a>

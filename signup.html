@@ -5,66 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up - My Blog</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
-    body { background:#f9fafb; display:flex; align-items:center; justify-content:center; height:100vh; }
-    .container { background:#fff; padding:2rem; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:350px; text-align:center; }
-    h2 { margin-bottom:1rem; color:#007bff; }
-    input { width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; }
-    button { width:100%; padding:10px; margin-top:10px; border:none; border-radius:6px; background:#007bff; color:#fff; font-weight:600; cursor:pointer; }
-    button:hover { background:#0056b3; }
-    p { margin-top:10px; font-size:14px; }
-    a { color:#ffd700; text-decoration:none; }
+    body { font-family: 'Poppins', sans-serif; background: #f9fafb; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .container { background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+    h2 { text-align: center; margin-bottom: 1.5rem; color: #007bff; }
+    input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccc; }
+    button { width: 100%; padding: 10px; margin-top: 10px; background: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+    button:hover { background: #0056b3; }
+    p { text-align: center; margin-top: 1rem; font-size: 0.9rem; }
+    a { color: #007bff; }
   </style>
 </head>
 <body>
-
   <div class="container">
     <h2>Sign Up</h2>
     <input type="text" id="name" placeholder="Full Name">
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
-    <button id="signup-btn">Sign Up</button>
-    <p>Already have an account? <a href="login.html">Login</a></p>
-    <p id="msg" style="color:red; font-size:14px;"></p>
+    <button id="signupBtn">Create Account</button>
+    <p>Already have an account? <a href="login.html">Sign In</a></p>
   </div>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
     const supabase = createClient(
       'https://ynvhluadxmsjoihdjmky.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'
+      'YOUR_SUPABASE_ANON_KEY'
     );
 
-    const signupBtn = document.getElementById('signup-btn');
-    const msg = document.getElementById('msg');
+    const signupBtn = document.getElementById('signupBtn');
 
     signupBtn.addEventListener('click', async () => {
       const name = document.getElementById('name').value;
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      if(!name || !email || !password){
-        msg.textContent = "Please fill all fields!";
-        return;
+      const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name } } });
+
+      if (error) {
+        alert(error.message);
+      } else {
+        alert('Account created! Please check your email to verify.');
+        window.location.href = 'login.html';
       }
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { name } }
-      });
-
-      if(error){
-        msg.textContent = error.message;
-        return;
-      }
-
-      msg.style.color = 'green';
-      msg.textContent = "Signup successful! Please verify your email before login.";
     });
   </script>
-
 </body>
 </html>

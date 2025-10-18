@@ -5,68 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - My Blog</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
-    body { background:#f9fafb; display:flex; align-items:center; justify-content:center; height:100vh; }
-    .container { background:#fff; padding:2rem; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.1); width:350px; text-align:center; }
-    h2 { margin-bottom:1rem; color:#007bff; }
-    input { width:100%; padding:10px; margin:10px 0; border-radius:6px; border:1px solid #ccc; }
-    button { width:100%; padding:10px; margin-top:10px; border:none; border-radius:6px; background:#007bff; color:#fff; font-weight:600; cursor:pointer; }
-    button:hover { background:#0056b3; }
-    p { margin-top:10px; font-size:14px; }
-    a { color:#ffd700; text-decoration:none; }
+    body { font-family: 'Poppins', sans-serif; background: #f9fafb; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .container { background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
+    h2 { text-align: center; margin-bottom: 1.5rem; color: #007bff; }
+    input { width: 100%; padding: 10px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccc; }
+    button { width: 100%; padding: 10px; margin-top: 10px; background: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+    button:hover { background: #0056b3; }
+    p { text-align: center; margin-top: 1rem; font-size: 0.9rem; }
+    a { color: #007bff; }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h2>Login</h2>
+    <h2>Sign In</h2>
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
-    <button id="login-btn">Sign In</button>
-    <p>Don’t have an account? <a href="signup.html">Sign Up</a></p>
-    <p id="msg" style="color:red; font-size:14px;"></p>
+    <button id="loginBtn">Login</button>
+    <p><a href="signup.html">Don't have an account? Sign Up</a></p>
+    <p><a href="reset.html">Forgot Password?</a></p>
   </div>
 
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
     const supabase = createClient(
       'https://ynvhluadxmsjoihdjmky.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE'
+      'YOUR_SUPABASE_ANON_KEY'
     );
 
-    const loginBtn = document.getElementById('login-btn');
-    const msg = document.getElementById('msg');
+    const loginBtn = document.getElementById('loginBtn');
 
     loginBtn.addEventListener('click', async () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      if(!email || !password){
-        msg.textContent = "Please enter email & password!";
-        return;
-      }
-
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-      if(error){
-        msg.textContent = error.message;
-        return;
+      if (error) {
+        alert(error.message);
+      } else if (!data.user.email_confirmed_at) {
+        alert('Please verify your email first!');
+      } else {
+        window.location.href = 'index.html';
       }
-
-      // Check email verification
-      const { data: userData } = await supabase.auth.getUser();
-      if(!userData.user.email_confirmed_at){
-        msg.textContent = "Please verify your email before logging in!";
-        await supabase.auth.signOut();
-        return;
-      }
-
-      // Success → redirect to home
-      window.location.href = "index.html";
     });
   </script>
-
 </body>
 </html>

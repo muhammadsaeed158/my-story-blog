@@ -3,6 +3,7 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const SUPABASE_URL = 'https://ynvhluadxmsjoihdjmky.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InludmhsdWFkeG1zam9paGRqbWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDQwMTgsImV4cCI6MjA3NDg4MDAxOH0.MFbwBZf5AZZVhV7UZWA-eHMi0KWGXW1wxATyHgo3agE';
+
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // -------------------- FOOTER YEAR --------------------
@@ -37,53 +38,49 @@ export function showMessage(msg, type = 'info') {
   setTimeout(() => { messageEl.style.opacity = '0'; }, 4000);
 }
 
-// -------------------- AUTH CHECK --------------------
+// -------------------- AUTH --------------------
+export async function signup(name, email, password) {
+  const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name } } });
+  if (error) showMessage(error.message, 'error');
+  else showMessage('Signup successful!', 'success');
+  return data;
+}
+
+export async function login(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) showMessage(error.message, 'error');
+  else showMessage('Login successful!', 'success');
+  return data;
+}
+
 export async function checkAuth(redirectLogin = true) {
-  try {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error || !user) {
-      if (redirectLogin) window.location.href = 'login.html';
-      return null;
-    }
-    return user;
-  } catch (err) {
-    console.error('Auth check failed:', err.message);
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) {
     if (redirectLogin) window.location.href = 'login.html';
     return null;
   }
+  return user;
 }
 
-// -------------------- LOGOUT --------------------
-export function setupLogout(logoutBtnId = 'logoutBtn') {
-  const logoutBtn = document.getElementById(logoutBtnId);
-  if (!logoutBtn) return;
-
-  logoutBtn.addEventListener('click', async () => {
-    try {
-      await supabase.auth.signOut();
-      showMessage('Logged out successfully', 'success');
-      setTimeout(() => window.location.href = 'login.html', 1000);
-    } catch (err) {
-      console.error('Logout failed:', err.message);
-      showMessage('Logout failed. Please try again.', 'error');
-    }
-  });
+export async function logout() {
+  const { error } = await supabase.auth.signOut();
+  if (error) showMessage('Logout failed', 'error');
+  else {
+    showMessage('Logged out', 'success');
+    window.location.href = 'login.html';
+  }
 }
 
-// -------------------- PASSWORD RESET --------------------
 export function setupPasswordReset(buttonId = 'forgotPassword') {
-  const forgotBtn = document.getElementById(buttonId);
-  if (!forgotBtn) return;
-
-  forgotBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
+  const btn = document.getElementById(buttonId);
+  if (!btn) return;
+  btn.addEventListener('click', async () => {
     const email = prompt('Enter your registered email:');
     if (!email) return;
-
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin + '/login.html'
     });
-    if (error) showMessage('Error sending reset email: ' + error.message, 'error');
+    if (error) showMessage(error.message, 'error');
     else showMessage('Password reset email sent!', 'success');
   });
 }
@@ -174,7 +171,7 @@ export function setupRealtimeUpdates() {
   });
 }
 
-// -------------------- INITIALIZE ALL --------------------
+// -------------------- INITIALIZE PAGE --------------------
 export async function initializePage() {
   await checkAuth(false); // don't redirect on home page
   fetchAndRenderContent('stories', 'stories-container', 'story');
@@ -182,3 +179,11 @@ export async function initializePage() {
   fetchAndRenderContent('videos', 'videos-container', 'video');
   setupRealtimeUpdates();
 }
+
+
+
+
+
+
+
+

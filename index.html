@@ -51,7 +51,7 @@
     .social-icons a.instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .social-icons a:hover { transform: scale(1.2); opacity: 0.85; }
 
-    /* Hide main content until user verified */
+    /* Hide content until login */
     #main-content { display: none; }
   </style>
 </head>
@@ -68,7 +68,10 @@
         <li><a href="website.html">Website Demo</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li id="auth-link"></li>
+        <li id="auth-link">
+          <a href="login.html">Sign In</a>
+          <p style="margin-top:4px; font-size:14px;">Don’t have an account? <a href="signup.html" style="color:#ffd700;">Sign Up</a></p>
+        </li>
       </ul>
     </nav>
   </header>
@@ -114,19 +117,15 @@
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        // Not logged in → show login/signup links
-        navLinks.innerHTML = `
-          <a href="login.html">Sign In</a>
-          <p style="margin-top:4px; font-size:14px;">Don’t have an account? <a href="signup.html" style="color:#ffd700;">Sign Up</a></p>
-        `;
+        // User not logged in → stay on page with Sign In/Sign Up links
         mainContent.style.display = "none";
       } else if (!user.email_confirmed_at) {
-        // Email not verified
+        // Email not verified → redirect to login
         alert("Please verify your email before accessing the site. Check your inbox!");
         await supabase.auth.signOut();
         window.location.href = "login.html";
       } else {
-        // Logged in & verified → show home content
+        // User logged in & verified → show content
         mainContent.style.display = "block";
 
         const { data: profile } = await supabase
@@ -156,6 +155,7 @@
       ];
 
       const featuredGrid = document.getElementById("featured-grid");
+      featuredGrid.innerHTML = "";
       featuredData.forEach(item => {
         const card = document.createElement("div");
         card.className = "card";
